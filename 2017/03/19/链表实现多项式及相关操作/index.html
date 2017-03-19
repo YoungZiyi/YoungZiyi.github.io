@@ -6,24 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Raspberry pi 直连Ubuntu系统笔记本 | oyzy</title>
+  <title>链表实现多项式及相关操作 | oyzy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="想通过ssh连上你的raspberry pi就应该使你的电脑和raspi处在同一个网段下(你的raspi有独立IP当我没说), 那么首先想到的就是把它们都连接到同一个路由器上, 如果手边没有路由器的话, 其实你也可以直接用一根网线直接连接你的电脑和raspi!
-Step 1: 准备一根网线不就是一根网线么? 有什么好讲的? 是这样的, 笔者之前上网搜索的时候, 看过一篇帖子:Raspberry与笔">
+  <meta name="description" content="多项式数据结构：123456typedef struct polyNode *polyNodePtr;struct polyNode &amp;#123;    int coef; // 整型系数部分    int expon; // 指数部分    poluNodePtr next;&amp;#125;;
+多项式加法操作：123456789101112131415161718192021222324252627">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Raspberry pi 直连Ubuntu系统笔记本">
-<meta property="og:url" content="http://yoursite.com/2016/06/14/Raspberry-pi-直连Ubuntu系统笔记本/index.html">
+<meta property="og:title" content="链表实现多项式及相关操作">
+<meta property="og:url" content="http://yoursite.com/2017/03/19/链表实现多项式及相关操作/index.html">
 <meta property="og:site_name" content="oyzy">
-<meta property="og:description" content="想通过ssh连上你的raspberry pi就应该使你的电脑和raspi处在同一个网段下(你的raspi有独立IP当我没说), 那么首先想到的就是把它们都连接到同一个路由器上, 如果手边没有路由器的话, 其实你也可以直接用一根网线直接连接你的电脑和raspi!
-Step 1: 准备一根网线不就是一根网线么? 有什么好讲的? 是这样的, 笔者之前上网搜索的时候, 看过一篇帖子:Raspberry与笔">
-<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/8932190cgw1f4up1i8h91j20f60ckt9z.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/8932190cgw1f4up1i8etmj20fu0dc0u4.jpg">
-<meta property="og:updated_time" content="2016-12-20T08:24:43.287Z">
+<meta property="og:description" content="多项式数据结构：123456typedef struct polyNode *polyNodePtr;struct polyNode &amp;#123;    int coef; // 整型系数部分    int expon; // 指数部分    poluNodePtr next;&amp;#125;;
+多项式加法操作：123456789101112131415161718192021222324252627">
+<meta property="og:updated_time" content="2017-03-19T12:21:37.977Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Raspberry pi 直连Ubuntu系统笔记本">
-<meta name="twitter:description" content="想通过ssh连上你的raspberry pi就应该使你的电脑和raspi处在同一个网段下(你的raspi有独立IP当我没说), 那么首先想到的就是把它们都连接到同一个路由器上, 如果手边没有路由器的话, 其实你也可以直接用一根网线直接连接你的电脑和raspi!
-Step 1: 准备一根网线不就是一根网线么? 有什么好讲的? 是这样的, 笔者之前上网搜索的时候, 看过一篇帖子:Raspberry与笔">
-<meta name="twitter:image" content="http://ww2.sinaimg.cn/mw690/8932190cgw1f4up1i8h91j20f60ckt9z.jpg">
+<meta name="twitter:title" content="链表实现多项式及相关操作">
+<meta name="twitter:description" content="多项式数据结构：123456typedef struct polyNode *polyNodePtr;struct polyNode &amp;#123;    int coef; // 整型系数部分    int expon; // 指数部分    poluNodePtr next;&amp;#125;;
+多项式加法操作：123456789101112131415161718192021222324252627">
   
     <link rel="alternative" href="/atom.xml" title="oyzy" type="application/atom+xml">
   
@@ -136,7 +133,7 @@ Step 1: 准备一根网线不就是一根网线么? 有什么好讲的? 是这�
 </nav>
 
       <div class="body-wrap">
-        <article id="post-Raspberry-pi-直连Ubuntu系统笔记本" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-链表实现多项式及相关操作" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -146,7 +143,7 @@ Step 1: 准备一根网线不就是一根网线么? 有什么好讲的? 是这�
         
   
     <h1 class="article-title" itemprop="name">
-      Raspberry pi 直连Ubuntu系统笔记本
+      链表实现多项式及相关操作
     </h1>
   
 
@@ -154,40 +151,25 @@ Step 1: 准备一根网线不就是一根网线么? 有什么好讲的? 是这�
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>想通过ssh连上你的raspberry pi就应该使你的电脑和raspi处在同一个网段下(你的raspi有独立IP当我没说), 那么首先想到的就是把它们都连接到同一个路由器上, 如果手边没有路由器的话, 其实你也可以直接用一根网线直接连接你的电脑和raspi!</p>
-<h2 id="Step-1-准备一根网线"><a href="#Step-1-准备一根网线" class="headerlink" title="Step 1: 准备一根网线"></a>Step 1: 准备一根网线</h2><p>不就是一根网线么? 有什么好讲的? 是这样的, 笔者之前上网搜索的时候, 看过一篇帖子:<a href="http://www.eeboard.com/bbs/thread-6476-1-1.html" target="_blank" rel="external">Raspberry与笔记本直连</a>, 里面有个人说</p>
-<blockquote>
-<p>camark<br>发表于 2013-1-10 15:51:24 |只看该作者<br>肯定不行。双机直连需要特殊的网线，而且要设置在一个网段。。</p>
-</blockquote>
-<p>笔者当时就有点失望, 不过也硬着头皮随便找了一根网线, 最后也成功了, 最后也没有深究那个人说的是否是对的, <strong>因此, 在此强调, 照着本文操作, 可能面临的风险</strong></p>
-<h2 id="Step-2-设置你笔记本的网络"><a href="#Step-2-设置你笔记本的网络" class="headerlink" title="Step 2: 设置你笔记本的网络"></a>Step 2: 设置你笔记本的网络</h2><p>其实也就是新建一个网络连接, 以Ubuntu 15.04为例子, 打开网络连接(屏幕右上角双箭头或wifi标志处), 点击编辑连接, 点击新建连接后如下图所示:</p>
-<p><img src="http://ww2.sinaimg.cn/mw690/8932190cgw1f4up1i8h91j20f60ckt9z.jpg" alt="add a new connection"></p>
-<p>选择Ethenet(以太网), 点击创建, 在弹出来的框框中点击IPv4 Settings选项卡, Method栏选择Automatic (DHCP), 图如下:</p>
-<p><img src="http://ww4.sinaimg.cn/mw690/8932190cgw1f4up1i8etmj20fu0dc0u4.jpg" alt="config your new connection"></p>
-<p>至此, 网络设置就OK了</p>
-<h2 id="Step-3-插进去"><a href="#Step-3-插进去" class="headerlink" title="Step 3: 插进去!!"></a>Step 3: 插进去!!</h2><p>把网线的一头插笔记本, 一头插raspi, 点击上步新建的网络连接, 等待连接建立成功, 不出意外, 连接成功了! 出意外的肯定是网络连接没设置好或者网线是坏的(这tm不是废话么…)</p>
-<h2 id="Step-4-Find-out-your-Raspi’s-IP-address"><a href="#Step-4-Find-out-your-Raspi’s-IP-address" class="headerlink" title="Step 4: Find out your Raspi’s IP address"></a>Step 4: Find out your Raspi’s IP address</h2><p>连接建立后你可以查看一下笔记本的连接信息, 找出你的笔记本IP地址, 注意! 是查看你连接raspi的网络连接的IP地址, 而不是如果你连了wifi的IP地址!</p>
-<p>假设你的笔记本IP地址是 10.42.0.1 , 使用nmap查找同网段所有主机IP地址, 在终端下键入<code>nmap 10.42.0.1/24</code>, 等待片刻你会发现有两台主机, 一台你的笔记本, 一台就是raspi, 还可以看到有哪些端口打开着. 至于nmap, 你需要自行安装, 一般终端键入<code>sudo apt-get install nmap</code>即可, 好了, 拿到你的raspi的IP, 就OK了, 接着键入<code>ssh pi@raspi的IP地址</code>, 默认密码raspberry</p>
+        <p>多项式数据结构：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> polyNode *polyNodePtr;</div><div class="line"><span class="keyword">struct</span> polyNode &#123;</div><div class="line">    <span class="keyword">int</span> coef; <span class="comment">// 整型系数部分</span></div><div class="line">    <span class="keyword">int</span> expon; <span class="comment">// 指数部分</span></div><div class="line">    poluNodePtr next;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>多项式加法操作：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="function">polyNodePtr <span class="title">polyAdd</span><span class="params">(polyNodePtr a, polyNodePtr b)</span></span></div><div class="line">&#123;</div><div class="line">    polyNodePtr c, tail, zeroNode;</div><div class="line">    tail = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(tail));</div><div class="line">    c = tail;</div><div class="line"></div><div class="line">    <span class="keyword">while</span> (a &amp;&amp; b)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (a-&gt;expon == b-&gt;expon)</div><div class="line">        &#123;</div><div class="line">            sum = a-&gt;coef + b-&gt;coef;</div><div class="line">            <span class="keyword">if</span> (sum)</div><div class="line">                attach(sum, a-&gt;expon, &amp;tail);</div><div class="line"></div><div class="line">            a = a-&gt;next;</div><div class="line">            b = b-&gt;next;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (a-&gt;expon &gt; b-&gt;expon)</div><div class="line">        &#123;</div><div class="line">            attach(a-&gt;coef, a-&gt;expon, &amp;tail);</div><div class="line">            </div><div class="line">            a = a-&gt;next;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span></div><div class="line">        &#123;</div><div class="line">            attach(b-&gt;coef, b-&gt;expon, &amp;tail);</div><div class="line"></div><div class="line">            b = b-&gt;next;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (; a; a = a-&gt;next) attach(a-&gt;coef, a-&gt;expon, &amp;tail);</div><div class="line">    <span class="keyword">for</span> (; b; b = b-&gt;next) attach(b-&gt;coef, b-&gt;expon, &amp;tail);</div><div class="line"></div><div class="line">    tail-&gt;next = <span class="literal">NULL</span>;</div><div class="line"></div><div class="line">    zeroNode = c;</div><div class="line">    c = c-&gt;next;</div><div class="line">    <span class="built_in">free</span>(zeroNode);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> c;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>多项式销毁：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">erase</span><span class="params">(polyNodePtr *p)</span></span></div><div class="line">&#123;</div><div class="line">    polyNodePtr node;</div><div class="line">    <span class="keyword">while</span> (*p)</div><div class="line">    &#123;</div><div class="line">        node = *p;</div><div class="line">        *p = (*p)-&gt;next;</div><div class="line">        <span class="built_in">free</span>(node);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码：<a href="https://github.com/YoungZiyi/COMPUTER_FUNDAMENTALS/blob/master/poly_list.c" target="_blank" rel="external">poly_list.c</a></p>
 
       
     </div>
     <div class="article-info article-info-index">
       
-      <a href="/2016/06/14/Raspberry-pi-直连Ubuntu系统笔记本/" class="archive-article-date">
-  	<time datetime="2016-06-14T06:09:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-06-14</time>
+      <a href="/2017/03/19/链表实现多项式及相关操作/" class="archive-article-date">
+  	<time datetime="2017-03-19T10:15:06.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-03-19</time>
 </a>
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/raspberry/">raspberry</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li></ul>
 	</div>
 
       
-	<div class="article-category tagcloud">
-	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/raspberry/">raspberry</a>
-	</div>
-
 
       <div class="clearfix"></div>
     </div>
@@ -197,15 +179,11 @@ Step 1: 准备一根网线不就是一根网线么? 有什么好讲的? 是这�
   
 <nav id="article-nav">
   
-    <a href="/2016/10/31/What-is-metaclass/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          What is metaclass
-        
-      </div>
-    </a>
   
+    <a href="/2017/03/14/Max-Sum-Subset-Problem/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Max Sum Subset Problem</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 

@@ -1,12 +1,6 @@
 #!/bin/bash
 
-cp -R public/* .deploy/YoungZiyi.github.io
-cd .deploy/YoungZiyi.github.io
-git add .
-git commit -m "update"
-git push
-
-cd ../../source
+cd source
 git add .
 git commit -m "update"
 git push
