@@ -98,44 +98,9 @@ theme: 3-hexo
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: ''
+  type: git
+  repo: git@github.com:YoungZiyi/YoungZiyi.github.io.git
+  branch: master
 
 # Overriding Theme Config
 theme_config:
-  link:
-    theme: color
-    items:
-      rss:
-      github: https://github.com/YoungZiyi
-      facebook:
-      twitter:
-      linkedin:
-      instagram:
-      reddit:
-      weibo:
-      jianshu:
-      zhihu:
-      csdn:
-      oschina:
-      juejin:
-      email:
-      qq:
-      kugou:
-      neteasemusic:
-  copyright: false
-  gitment:
-    owner: YoungZiyi
-    repo: YoungZiyi.github.io
-  menu:
-    about:
-      on: false
-    friend:
-      on: true
-  article_txt:
-  bottom_text: ©2016-2019 oyzy
-  article_bg_img:
-    on: false
-  comment:
-   on: true
-   type: gitment
-  
