@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    PHP框架的路由实现浅析 |  oyzy
+    python中的迭代器和生成器 |  oyzy
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -33,7 +33,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-PHP框架的路由实现浅析" class="article article-type-post" itemscope
+  <article id="post-python中的生成器和迭代器" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -41,7 +41,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  PHP框架的路由实现浅析
+  python中的迭代器和生成器
 </h1>
  
 
@@ -50,12 +50,12 @@
 
     
     <div class="article-meta">
-      <a href="/2018/10/24/PHP%E6%A1%86%E6%9E%B6%E7%9A%84%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E6%B5%85%E6%9E%90/" class="article-date">
-  <time datetime="2018-10-24T15:15:11.000Z" itemprop="datePublished">2018-10-24</time>
+      <a href="/2020/03/26/python%E4%B8%AD%E7%9A%84%E7%94%9F%E6%88%90%E5%99%A8%E5%92%8C%E8%BF%AD%E4%BB%A3%E5%99%A8/" class="article-date">
+  <time datetime="2020-03-26T13:15:32.000Z" itemprop="datePublished">2020-03-26</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
   </div>
 
       
@@ -64,6 +64,8 @@
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -76,7 +78,31 @@
       
 
       
-      <p>todo</p>
+      <p>复习一下python的高级特性</p>
+<h2 id="可迭代对象"><a href="#可迭代对象" class="headerlink" title="可迭代对象"></a>可迭代对象</h2><p>当需要迭代一个对象时, 会自动调用<code>iter</code>函数, <code>iter</code>函数会检查对象是否实现了<br><code>__iter__</code>方法, 如果有则调用对象的<code>__iter__</code>方法获取一个迭代器, 没有则继续检查对象<br>是否实现了<code>__getitem__</code>方法, 如果有, python会自动创建一个迭代器, 使用从0开始的索引<br>为参数调用<code>__getitem__</code>, 该方法将返回对应索引的元素, 如果<code>__getitem__</code>方法也不存<br>在, 则抛出<code>TypeError</code>异常, 提示对象不可迭代</p>
+<p>可迭代对象(iterable)就是使用内置函数<code>iter</code>可以获取迭代器的对象, 该对象要么实现了能<br>够直接返回迭代器的<code>__iter__</code>方法, 要么实现了接受从0开始的索引为参数的<code>__getitem__</code><br>方法</p>
+<p>由于<code>__iter__</code>方法需要返回迭代器, 先给出实现<code>__getitem__</code>方法的可迭代对象示例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">it1</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.text[index]</span><br><span class="line"></span><br><span class="line">obj = it1(<span class="string">'abcdefg'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> obj:</span><br><span class="line">    <span class="comment"># 依次打印 a, b, c, d, e, f, g</span></span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>迭代器(iterator)就是实现了<code>__next__</code>方法的对象, 该方法也是返回序列的当前元素, 它跟<br><code>__getitem__</code>的区别就是, 当前元素的索引是保存在迭代器对象实例中, 而<code>__getitem__</code>是<br>由python解释器自动创建的迭代器提供的索引</p>
+<p>迭代器实例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">it2</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">        self.index = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            curr_char = self.text[self.index]</span><br><span class="line">        <span class="keyword">except</span> IndexError:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration()</span><br><span class="line"></span><br><span class="line">obj = it2(<span class="string">'abcdefg'</span>)</span><br><span class="line">print(next(i2))<span class="comment"># 输出 a</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 b</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 c</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 d</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 e</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 f</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 g</span></span><br></pre></td></tr></table></figure>
+
+<p>我们使用<code>for</code>语句迭代一个对象(<code>obj</code>)过程如下:</p>
+<ol>
+<li>使用内置函数<code>iter</code>获取<code>obj</code>对象的迭代器 (分两种情况, 第一种是通过<code>__iter__</code>直接获取对象的迭代器,<br>第二种是通过python解释器自动创建迭代器, 并通过<code>obj</code>对象的<code>__getitem__</code>方法获取序列元素)</li>
+<li>获得迭代器<code>iter</code>后, 循环调用<code>next(iter)</code>获取元素, 直到<code>__next__</code>方法抛出StopIteration结束循环</li>
+</ol>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>生成器是迭代器的子集, 所以它也属于迭代器, 只是它的实现方式不一样, 生成器更简洁, 而且<br>它不需要像迭代器一样维护一个索引, 它是通过<code>yield</code>语句来实现的</p>
+<p>生成器函数实例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">it3</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> curr_char <span class="keyword">in</span> text:</span><br><span class="line">        <span class="keyword">yield</span> curr_char</span><br><span class="line"></span><br><span class="line">obj = it3(<span class="string">'abcdefg'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> obj:</span><br><span class="line">    <span class="comment"># 依次打印 a, b, c, d, e, f, g</span></span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<p>代码在执行到<code>yield</code>时, 将返回其后的值, 然后并不像<code>return</code>语句一样退出, 而是挂起函数<br>的状态, 下次再从当前胃继续执行</p>
+<p>生成器表达式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表推导式</span></span><br><span class="line">li = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">print(li)<span class="comment"># 输出 [0, 1, 4, 9, 16]</span></span><br><span class="line"><span class="comment"># 生成器表达式</span></span><br><span class="line">li = (x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line">print(li)<span class="comment"># &lt;generator object &lt;genexpr&gt; at 0x7ff563aa6938&gt;</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 0</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 1</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 4</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 9</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 16</span></span><br><span class="line">print(next(li))<span class="comment"># 自动抛出StopIteration异常</span></span><br></pre></td></tr></table></figure>
+
+<p>生成器除了实现简洁外, 它还有节省内存的优点, 它不是一次性构建整个结果列表, 它有延迟计<br>算的特点, 按需产生结果</p>
 
       
       <!-- reward -->
@@ -146,14 +172,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://youngziyi.github.io/2018/10/24/PHP%E6%A1%86%E6%9E%B6%E7%9A%84%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E6%B5%85%E6%9E%90/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://youngziyi.github.io/2020/03/26/python%E4%B8%AD%E7%9A%84%E7%94%9F%E6%88%90%E5%99%A8%E5%92%8C%E8%BF%AD%E4%BB%A3%E5%99%A8/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BA%94%E7%94%A8%E6%8A%80%E6%9C%AF/" rel="tag">应用技术</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
 
 
     </footer>
@@ -164,19 +190,10 @@
   
   <nav class="article-nav">
     
+    
       <a href="/2020/03/26/hello-world/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Hello World
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2018/05/11/select-poll-epoll-%E5%88%9D%E6%8E%A2/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">select poll epoll 初探</div>
+        <div class="article-nav-title">Hello World</div>
       </a>
     
   </nav>

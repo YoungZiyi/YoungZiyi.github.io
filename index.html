@@ -72,6 +72,96 @@
     
     
     
+    <article id="post-python中的生成器和迭代器" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/26/python%E4%B8%AD%E7%9A%84%E7%94%9F%E6%88%90%E5%99%A8%E5%92%8C%E8%BF%AD%E4%BB%A3%E5%99%A8/"
+    >python中的迭代器和生成器</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/26/python%E4%B8%AD%E7%9A%84%E7%94%9F%E6%88%90%E5%99%A8%E5%92%8C%E8%BF%AD%E4%BB%A3%E5%99%A8/" class="article-date">
+  <time datetime="2020-03-26T13:15:32.000Z" itemprop="datePublished">2020-03-26</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>复习一下python的高级特性</p>
+<h2 id="可迭代对象"><a href="#可迭代对象" class="headerlink" title="可迭代对象"></a>可迭代对象</h2><p>当需要迭代一个对象时, 会自动调用<code>iter</code>函数, <code>iter</code>函数会检查对象是否实现了<br><code>__iter__</code>方法, 如果有则调用对象的<code>__iter__</code>方法获取一个迭代器, 没有则继续检查对象<br>是否实现了<code>__getitem__</code>方法, 如果有, python会自动创建一个迭代器, 使用从0开始的索引<br>为参数调用<code>__getitem__</code>, 该方法将返回对应索引的元素, 如果<code>__getitem__</code>方法也不存<br>在, 则抛出<code>TypeError</code>异常, 提示对象不可迭代</p>
+<p>可迭代对象(iterable)就是使用内置函数<code>iter</code>可以获取迭代器的对象, 该对象要么实现了能<br>够直接返回迭代器的<code>__iter__</code>方法, 要么实现了接受从0开始的索引为参数的<code>__getitem__</code><br>方法</p>
+<p>由于<code>__iter__</code>方法需要返回迭代器, 先给出实现<code>__getitem__</code>方法的可迭代对象示例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">it1</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.text[index]</span><br><span class="line"></span><br><span class="line">obj = it1(<span class="string">'abcdefg'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> obj:</span><br><span class="line">    <span class="comment"># 依次打印 a, b, c, d, e, f, g</span></span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>迭代器(iterator)就是实现了<code>__next__</code>方法的对象, 该方法也是返回序列的当前元素, 它跟<br><code>__getitem__</code>的区别就是, 当前元素的索引是保存在迭代器对象实例中, 而<code>__getitem__</code>是<br>由python解释器自动创建的迭代器提供的索引</p>
+<p>迭代器实例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">it2</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">        self.index = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            curr_char = self.text[self.index]</span><br><span class="line">        <span class="keyword">except</span> IndexError:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration()</span><br><span class="line"></span><br><span class="line">obj = it2(<span class="string">'abcdefg'</span>)</span><br><span class="line">print(next(i2))<span class="comment"># 输出 a</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 b</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 c</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 d</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 e</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 f</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 g</span></span><br></pre></td></tr></table></figure>
+
+<p>我们使用<code>for</code>语句迭代一个对象(<code>obj</code>)过程如下:</p>
+<ol>
+<li>使用内置函数<code>iter</code>获取<code>obj</code>对象的迭代器 (分两种情况, 第一种是通过<code>__iter__</code>直接获取对象的迭代器,<br>第二种是通过python解释器自动创建迭代器, 并通过<code>obj</code>对象的<code>__getitem__</code>方法获取序列元素)</li>
+<li>获得迭代器<code>iter</code>后, 循环调用<code>next(iter)</code>获取元素, 直到<code>__next__</code>方法抛出StopIteration结束循环</li>
+</ol>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>生成器是迭代器的子集, 所以它也属于迭代器, 只是它的实现方式不一样, 生成器更简洁, 而且<br>它不需要像迭代器一样维护一个索引, 它是通过<code>yield</code>语句来实现的</p>
+<p>生成器函数实例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">it3</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> curr_char <span class="keyword">in</span> text:</span><br><span class="line">        <span class="keyword">yield</span> curr_char</span><br><span class="line"></span><br><span class="line">obj = it3(<span class="string">'abcdefg'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> obj:</span><br><span class="line">    <span class="comment"># 依次打印 a, b, c, d, e, f, g</span></span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<p>代码在执行到<code>yield</code>时, 将返回其后的值, 然后并不像<code>return</code>语句一样退出, 而是挂起函数<br>的状态, 下次再从当前胃继续执行</p>
+<p>生成器表达式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表推导式</span></span><br><span class="line">li = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">print(li)<span class="comment"># 输出 [0, 1, 4, 9, 16]</span></span><br><span class="line"><span class="comment"># 生成器表达式</span></span><br><span class="line">li = (x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line">print(li)<span class="comment"># &lt;generator object &lt;genexpr&gt; at 0x7ff563aa6938&gt;</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 0</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 1</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 4</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 9</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 16</span></span><br><span class="line">print(next(li))<span class="comment"># 自动抛出StopIteration异常</span></span><br></pre></td></tr></table></figure>
+
+<p>生成器除了实现简洁外, 它还有节省内存的优点, 它不是一次性构建整个结果列表, 它有延迟计<br>算的特点, 按需产生结果</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-hello-world" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -903,78 +993,6 @@
 
 </article>
     
-    <article id="post-链表实现多项式及相关操作" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2017/03/19/%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/"
-    >链表实现多项式及相关操作</a> 
-</h2>
- 
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2017/03/19/%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time datetime="2017-03-19T10:15:06.000Z" itemprop="datePublished">2017-03-19</time>
-</a>
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>多项式数据结构：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">polyNode</span> *<span class="title">polyNodePtr</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">polyNode</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> coef; <span class="comment">// 整型系数部分</span></span><br><span class="line">    <span class="keyword">int</span> expon; <span class="comment">// 指数部分</span></span><br><span class="line">    poluNodePtr next;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-<p>多项式加法操作：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">polyNodePtr <span class="title">polyAdd</span><span class="params">(polyNodePtr a, polyNodePtr b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    polyNodePtr c, tail, zeroNode;</span><br><span class="line">    tail = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(tail));</span><br><span class="line">    c = tail;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (a &amp;&amp; b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a-&gt;expon == b-&gt;expon)</span><br><span class="line">        &#123;</span><br><span class="line">            sum = a-&gt;coef + b-&gt;coef;</span><br><span class="line">            <span class="keyword">if</span> (sum)</span><br><span class="line">                <span class="built_in">attach</span>(sum, a-&gt;expon, &amp;tail);</span><br><span class="line"></span><br><span class="line">            a = a-&gt;next;</span><br><span class="line">            b = b-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (a-&gt;expon &gt; b-&gt;expon)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">attach</span>(a-&gt;coef, a-&gt;expon, &amp;tail);</span><br><span class="line">            </span><br><span class="line">            a = a-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">attach</span>(b-&gt;coef, b-&gt;expon, &amp;tail);</span><br><span class="line"></span><br><span class="line">            b = b-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (; a; a = a-&gt;next) <span class="built_in">attach</span>(a-&gt;coef, a-&gt;expon, &amp;tail);</span><br><span class="line">    <span class="keyword">for</span> (; b; b = b-&gt;next) <span class="built_in">attach</span>(b-&gt;coef, b-&gt;expon, &amp;tail);</span><br><span class="line"></span><br><span class="line">    tail-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    zeroNode = c;</span><br><span class="line">    c = c-&gt;next;</span><br><span class="line">    <span class="built_in">free</span>(zeroNode);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>多项式销毁：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">erase</span><span class="params">(polyNodePtr *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    polyNodePtr node;</span><br><span class="line">    <span class="keyword">while</span> (*p)</span><br><span class="line">    &#123;</span><br><span class="line">        node = *p;</span><br><span class="line">        *p = (*p)-&gt;next;</span><br><span class="line">        <span class="built_in">free</span>(node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>代码：<a href="https://github.com/YoungZiyi/COMPUTER_FUNDAMENTALS/blob/master/poly_list.c" target="_blank" rel="noopener">poly_list.c</a></p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
   </article>
   
 
@@ -1044,15 +1062,15 @@
   <ul class="nav nav-main">
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
+      <a class="nav-item-link" href="/">Home</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
+      <a class="nav-item-link" href="/archives">Archives</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
+      <a class="nav-item-link" href="/categories">Categories</a>
     </li>
     
   </ul>
