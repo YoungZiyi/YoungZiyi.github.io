@@ -113,7 +113,7 @@ python2中隐性的字符串类型转换在所有字符都是ascii时表现正�
 可能导致错误
 
 
-# python3中的编码
+## python3中的编码
 
 python3中也有两种类型的字符串, 直接由引号括起来的字符串是`str`类型, 普通字符串加`b`
 前缀的字符串属于`bytes`类型
@@ -129,3 +129,50 @@ print(type(s2))# <class 'bytes'>
 python2中的`str` 等价于 python3中的` bytes`  
 python2中的`unicode` 等价于 python3中的` str`
 
+python3中不会做任何隐性的类型转换, 如果拼接`str`和`bytes`类型的字符串, 将会抛出
+`TypeError`错误
+
+
+## 编码问题最佳实现
+
+编码问题并不复杂, 只要遵循以下几点就可以避免大部分的编码问题, python2/3同样适用
+
+> 1.bytes on the outside, Unicode on the inside.
+
+进出你的程序的数据必须是`bytes`类型, 在程序内部处理`unicode`字符串
+
+> 2.know what you have
+
+必须知道自己处理的数据是什么类型的字符串, 要确定到底是`bytes`还是`unicdoe`类型, 
+如果是`bytes`类型, 还需要知道它的编码是什么, 才可以根据对应的编码将`bytes`转换
+为`unicode`, 但是, 数据的编码是无法仅仅根据`bytes`类型的字符串本身得出来, 要么
+从数据源处得知, 要么只能靠猜
+
+
+## 总结
+
+> 1.编码表保存编码位与字符之间映射关系, `unicode`支持所有的语言字符, 它兼容
+> `ascii`
+>  
+> 2.编码位(code points)是数字, 需要转换成字节才能让计算机处理, 转换规则由编
+> 码方式决定, 例如`ASCII`编码使用一个字节保存它所支持的127个字符, `UTF-8`使
+> 用可变长字节数保存`unicode`字符, 其中, `ASCII`中的字符在`UTF-8`中是完全一
+> 样的, 所以`ASCII`是`UTF-8`的子集
+>  
+> 3.python2有两种类型的字符串, `str`和`unicode`, 
+> `str`保存的是`bytes`,
+> `unicode`保存的是`unicode`, 
+> `str`通过`decode`方法可以转换成`unicode`, 
+> `unicdoe`通过`encode`方法可以转换成`bytes`,
+>  
+> 4.python3同样有两种类型的字符串, `str`和`bytes`, 
+> `str`保存的是`unicode`, 
+> `bytes`保存的是`bytes`, 
+> `str`通过`encode`方法转换成`bytes`
+> `bytes`通过`decode`方法转换成`str`
+>  
+> 5.python2中存在隐性转换字符串类型的现象, 例如拼接不同类型的字符串, 则会根据
+> 默认编码自动将`bytes`转换成`unicode`再拼接, python3中拼接不同类型字符串则会
+> 报错, tip1: 不要依赖自动转换, 任何时候都需要清楚的知道自己处理的字符串类型
+>  
+> 6.程序内部处理的字符串都应该是`unicode`类型, 出去的都应该是`bytes`类型
