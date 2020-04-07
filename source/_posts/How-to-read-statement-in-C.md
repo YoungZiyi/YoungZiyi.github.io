@@ -1,7 +1,7 @@
 ---
 title: How to read statement in C
 date: 2016-11-25 11:11:11 +0800
-categories: C
+categories: 技术
 tags: C
 ---
 

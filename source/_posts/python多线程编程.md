@@ -1,7 +1,7 @@
 ---
 title: python多线程编程
 date: 2017-8-5 11:11:11 +0800
-categories: python
+categories: 技术
 tags: python
 ---
 

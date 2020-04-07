@@ -1,7 +1,7 @@
 ---
 title: Raspberry pi 直连Ubuntu系统笔记本
 date: 2016-06-14 14:09:00 +0800
-categories: raspberry
+categories: 技术
 tags: raspberry 
 ---
 

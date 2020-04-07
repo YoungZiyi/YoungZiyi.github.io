@@ -1,8 +1,8 @@
 ---
 title: python源码解析 读书笔记II
 date: 2017-7-27 22:03:11 +0800
-categories: python
-tags: 读书笔记
+categories: 技术
+tags: python
 ---
 
 # python源码解析 读书笔记II —— python虚拟机

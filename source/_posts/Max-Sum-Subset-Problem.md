@@ -1,8 +1,8 @@
 ---
 title: Max Sum Subset Problem
 date: 2017-3-14 11:11:11 +0800
-categories: algorithm
-tags: python
+categories: 技术
+tags: 算法
 ---
 最大子列和问题  
 最简单、时间复杂度为O(n^3)的实现方法  

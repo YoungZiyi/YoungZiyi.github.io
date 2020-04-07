@@ -1,7 +1,7 @@
 ---
 title: What is metaclass
 date: 2016-10-31 11:11:11 +0800
-categories: python
+categories: 技术
 tags: python
 ---
 

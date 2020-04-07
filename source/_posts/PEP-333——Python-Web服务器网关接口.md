@@ -1,8 +1,8 @@
 ---
 title: PEP333——Python Web服务器网关接口
 date: 2017-8-24 22:32:11 +0800
-categories: PEP
-tags: 翻译
+categories: 技术
+tags: PEP
 ---
 
 # PEP 333——Python Web服务器网关接口 v1.0
