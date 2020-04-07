@@ -1,7 +1,7 @@
 ---
 title: python中的迭代器和生成器
 date: 2020-03-26 21:15:32
-categories: python
+categories: 技术
 tags: python
 ---
 
@@ -62,10 +62,14 @@ print(next(i2))# 输出 f
 print(next(i2))# 输出 g
 ```
 
+
+## 使用for迭代的过程
+
 我们使用`for`语句迭代一个对象(`obj`)过程如下:
-1. 使用内置函数`iter`获取`obj`对象的迭代器 (分两种情况, 第一种是通过`__iter__`直接获取对象的迭代器,
-第二种是通过python解释器自动创建迭代器, 并通过`obj`对象的`__getitem__`方法获取序列元素)
-2. 获得迭代器`iter`后, 循环调用`next(iter)`获取元素, 直到`__next__`方法抛出StopIteration结束循环
+1. 使用内置函数`iter`获取`obj`对象的迭代器 (分两种情况, 第一种是通过`__iter__`直接
+获取对象的迭代器, 第二种是通过python解释器自动创建迭代器
+2. 获得迭代器后, 循环调用`next(iter)`获取元素, `next`函数调用迭代器内部的`__next__`
+方法以获得序列中的元素, 直到`__next__`方法抛出StopIteration结束循环
 
 
 ## 生成器
@@ -89,7 +93,11 @@ for i in obj:
 代码在执行到`yield`时, 将返回其后的值, 然后并不像`return`语句一样退出, 而是挂起函数
 的状态, 下次再从当前胃继续执行
 
-生成器表达式
+
+## 生成器表达式
+
+类似列表推导式, 只是方括号替换成大括号
+
 ```python
 # 列表推导式
 li = [x**2 for x in range(5)]
