@@ -72,6 +72,93 @@
     
     
     
+    <article id="post-python源码解析-读书笔记II" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2017/07/27/python%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0II/"
+    >python源码解析 读书笔记II</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2017/07/27/python%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0II/" class="article-date">
+  <time datetime="2017-07-27T14:03:11.000Z" itemprop="datePublished">2017-07-27</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h1 id="python源码解析-读书笔记II-——-python虚拟机"><a href="#python源码解析-读书笔记II-——-python虚拟机" class="headerlink" title="python源码解析 读书笔记II —— python虚拟机"></a>python源码解析 读书笔记II —— python虚拟机</h1><h2 id="python执行过程"><a href="#python执行过程" class="headerlink" title="python执行过程"></a>python执行过程</h2><p>python源代码 输入 -&gt; python解释器 编译 -&gt; python字节码 输入 -&gt; python虚拟机 执行</p>
+<h2 id="python编译编出来的到底是什么玩意？"><a href="#python编译编出来的到底是什么玩意？" class="headerlink" title="python编译编出来的到底是什么玩意？"></a>python编译编出来的到底是什么玩意？</h2><p>python是一门解释型语言，它编译后得到的不是机器码，而是叫字节码，就是以<code>.pyc</code>为后缀的文件。</p>
+<p>python源代码中的静态信息（字符串、常量值）储存在一个运行时的对象中，这个对象就是<code>PyCodeObject</code>，python编译的结果其实就是这个对象，而<code>.pyc</code>文件就是这个对象在硬盘上的表现形式。</p>
+<p>PyCodeObject对象的声明<br>code.h</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">  PyObject_HEAD</span><br><span class="line">  <span class="keyword">int</span> co_argcount; <span class="comment">// Code block中位置参数的个数（位置参数？）</span></span><br><span class="line">  <span class="keyword">int</span> co_nlocals; <span class="comment">// Code block中局部变量的个数（包括位置参数）</span></span><br><span class="line">  <span class="keyword">int</span> co_stacksize; <span class="comment">// 执行这个code block需要的栈空间</span></span><br><span class="line">  <span class="keyword">int</span> co_flags;</span><br><span class="line">  PyObject *co_code; <span class="comment">// code block编译所得字节码的指令序列，以PyStringObject的形式存在</span></span><br><span class="line">  PyObject *co_consts; <span class="comment">// 保存该code block中所有常量，以PyTupleObject的形式存在</span></span><br><span class="line">  PyObject *co_names; <span class="comment">// 保存该code block中所有符号（？），以PyTupleObject的形式存在</span></span><br><span class="line">  PyObject *co_varnames；<span class="comment">// 保存该code block中左右局部变量名</span></span><br><span class="line">  PyObject *co_freevars; <span class="comment">// Python实现闭包需要用到的东西</span></span><br><span class="line">  PyObject *co_cellvars; <span class="comment">// code block中内部嵌套函数所引用的局部变量名集合</span></span><br><span class="line">  <span class="comment">/* THe rest doesn't count for hash/cmp */</span></span><br><span class="line">  PyObject *co_filename; <span class="comment">// code block中对应的py文件完整路径</span></span><br><span class="line">  PyObject *co_name; <span class="comment">// code block的名字，通常是函数名或类名</span></span><br><span class="line">  <span class="keyword">int</span> co_firstlineno; <span class="comment">// code block对应py文件中的起始行</span></span><br><span class="line">  PyObject *co_lnotab; <span class="comment">// 字节码指令与py文件中source code行号的对应关系，以PyStringObject的形式存在</span></span><br><span class="line">&#125; PyCodeObject;</span><br></pre></td></tr></table></figure>
+
+<p>python代码中每一个code block都会创建一个PyCodeObject对象与之对应。code block就是一个 作用域/命名空间，例如一个 函数/类/源文件。</p>
+<p>怎样生成<code>.pyc</code>文件</p>
+<ul>
+<li>import一个模块时，会生成该模块的pyc文件</li>
+<li>python标准库中的py_compile、compiler工具</li>
+</ul>
+<p>import一个模块时，python会在设定好的path中按顺序查找以这个模块名命名的dll和pyc文件，如果只找到.py文件，那就会把源代码编译成PyCodeObject对象，并创建.pyc文件，把对象写入文件中，接下来python才会对.pyc文件进行加载操作。实际上就是把pyc文件的Code对象在内存上重新复制出来。</p>
+<p>co_lnotab域储存的是字节码指令与py文件中source code行号的对应关系，而在python2.3以前，有一条字节码指令，叫SET_LINENO，这条字节码会记录py文件中source code的位置，python2.3之后编译不会再产生这条字节码，因为字节码代表的是运行时的行为，而记录源代码行号的动作完全可以在编译时完成，所以python会在编译时直接将这个信息记录到co_lnotab中。</p>
+<p>python中可以访问PyCodeObject对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source = open(<span class="string">'demo.py'</span>).read()</span><br><span class="line">co = compile(source, <span class="string">'demo.py'</span>, <span class="string">'exec'</span>) <span class="comment"># co就是PyCodeObject</span></span><br><span class="line">type(co) <span class="comment"># &lt;type 'code'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="pyc文件的生成"><a href="#pyc文件的生成" class="headerlink" title="pyc文件的生成"></a>pyc文件的生成</h2><p>python的import机制会产生pyc文件，那么import时到底做了哪些操作？<br>import.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">write_compiled_module</span><span class="params">(PyCodeObject *co, <span class="keyword">char</span> *cpathname, <span class="keyword">long</span> mtime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  FILE *fp;</span><br><span class="line">  fp = open_exclusive(cpathname); <span class="comment">// 排他性打开文件</span></span><br><span class="line">  <span class="comment">// 【1】写入Python magic number</span></span><br><span class="line">  PyMarshal_WriteLongToFile(pyc_magic, fp, Py_MARSHAL_VERSION);</span><br><span class="line">  <span class="comment">// 【2】写入时间信息</span></span><br><span class="line">  PyMarshal_WriteLongToFile(mtime, fp, Py_MARSHAL_VERSION);</span><br><span class="line">  <span class="comment">// 【3】写入PyCodeObject对象</span></span><br><span class="line">  PyMarshal_WriteObjectToFile((PyObject *)co, fp, Py_MARSHAL_VERSION);</span><br><span class="line">  </span><br><span class="line">  fflush(fp);</span><br><span class="line">  fclose(fp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>magic number是啥？<br>他是python定义的一个整数值，一般不同的版本的magic number不同，，这个值用来保证python的兼容性的。python加载pyc文件时首先会检查这个值，如果不同则会拒绝加载这个pyc文件。<br>另外这个值定义在import.c中。</p>
+<p>为什么要写如时间信息？<br>这主要是为了保证pyc文件与源文件同步，当用户修改了源文件，python加载了较旧的pyc文件后，会检查发现pyc的时间早于py文件，于是会自动重新编译源文件，生成新的pyc文件。</p>
+<p>PyCodeObject怎么写入文件中？<br>根据对象中不同类型的域调用不同的方法去写文件，在写对象之前都会先写入对象的类型，这样对pyc文件再次加载有重要作用。</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-链表实现多项式及相关操作" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 

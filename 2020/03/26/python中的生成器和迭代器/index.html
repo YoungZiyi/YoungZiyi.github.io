@@ -55,7 +55,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -89,17 +89,18 @@
 <p>迭代器实例</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">it2</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">        self.index = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            curr_char = self.text[self.index]</span><br><span class="line">        <span class="keyword">except</span> IndexError:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration()</span><br><span class="line"></span><br><span class="line">obj = it2(<span class="string">'abcdefg'</span>)</span><br><span class="line">print(next(i2))<span class="comment"># 输出 a</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 b</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 c</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 d</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 e</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 f</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 g</span></span><br></pre></td></tr></table></figure>
 
-<p>我们使用<code>for</code>语句迭代一个对象(<code>obj</code>)过程如下:</p>
+
+<h2 id="使用for迭代的过程"><a href="#使用for迭代的过程" class="headerlink" title="使用for迭代的过程"></a>使用for迭代的过程</h2><p>我们使用<code>for</code>语句迭代一个对象(<code>obj</code>)过程如下:</p>
 <ol>
-<li>使用内置函数<code>iter</code>获取<code>obj</code>对象的迭代器 (分两种情况, 第一种是通过<code>__iter__</code>直接获取对象的迭代器,<br>第二种是通过python解释器自动创建迭代器, 并通过<code>obj</code>对象的<code>__getitem__</code>方法获取序列元素)</li>
-<li>获得迭代器<code>iter</code>后, 循环调用<code>next(iter)</code>获取元素, 直到<code>__next__</code>方法抛出StopIteration结束循环</li>
+<li>使用内置函数<code>iter</code>获取<code>obj</code>对象的迭代器 (分两种情况, 第一种是通过<code>__iter__</code>直接<br>获取对象的迭代器, 第二种是通过python解释器自动创建迭代器</li>
+<li>获得迭代器后, 循环调用<code>next(iter)</code>获取元素, <code>next</code>函数调用迭代器内部的<code>__next__</code><br>方法以获得序列中的元素, 直到<code>__next__</code>方法抛出StopIteration结束循环</li>
 </ol>
 <h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>生成器是迭代器的子集, 所以它也属于迭代器, 只是它的实现方式不一样, 生成器更简洁, 而且<br>它不需要像迭代器一样维护一个索引, 它是通过<code>yield</code>语句来实现的</p>
 <p>生成器函数实例</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">it3</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> curr_char <span class="keyword">in</span> text:</span><br><span class="line">        <span class="keyword">yield</span> curr_char</span><br><span class="line"></span><br><span class="line">obj = it3(<span class="string">'abcdefg'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> obj:</span><br><span class="line">    <span class="comment"># 依次打印 a, b, c, d, e, f, g</span></span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
 
 <p>代码在执行到<code>yield</code>时, 将返回其后的值, 然后并不像<code>return</code>语句一样退出, 而是挂起函数<br>的状态, 下次再从当前胃继续执行</p>
-<p>生成器表达式</p>
+<h2 id="生成器表达式"><a href="#生成器表达式" class="headerlink" title="生成器表达式"></a>生成器表达式</h2><p>类似列表推导式, 只是方括号替换成大括号</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表推导式</span></span><br><span class="line">li = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">print(li)<span class="comment"># 输出 [0, 1, 4, 9, 16]</span></span><br><span class="line"><span class="comment"># 生成器表达式</span></span><br><span class="line">li = (x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line">print(li)<span class="comment"># &lt;generator object &lt;genexpr&gt; at 0x7ff563aa6938&gt;</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 0</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 1</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 4</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 9</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 16</span></span><br><span class="line">print(next(li))<span class="comment"># 自动抛出StopIteration异常</span></span><br></pre></td></tr></table></figure>
 
 <p>生成器除了实现简洁外, 它还有节省内存的优点, 它不是一次性构建整个结果列表, 它有延迟计<br>算的特点, 按需产生结果</p>
@@ -189,6 +190,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/04/02/python%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            python编码问题
+          
+        </div>
+      </a>
     
     
       <a href="/2020/03/26/hello-world/" class="article-nav-link">

@@ -72,6 +72,96 @@
     
     
     
+    <article id="post-python编码问题" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/04/02/python%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/"
+    >python编码问题</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/02/python%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-04-02T06:49:01.000Z" itemprop="datePublished">2020-04-02</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p><a href="https://nedbatchelder.com/text/unipain.html" target="_blank" rel="noopener">参考</a></p>
+<h2 id="编码基础"><a href="#编码基础" class="headerlink" title="编码基础"></a>编码基础</h2><p><img src="/img/USASCII_code_chart.png" alt="ascii" title="source: upload.wikimedia.org"></p>
+<p>这是ascii编码表, 从0到127, 每一个数字(code point)对应一个字符, 编码表就是这种对应<br>关系的映射表, 由于计算机只能处理字节, 所以还需要将数字保存为字节, <strong><em>ASCII编码</em></strong><br>规定使用一个字节</p>
+<p>一个字节提供的编码位是从0到255, 足以存下ascii编码表中所有字符, 为了支持更多语言, 人<br>们使用更多的字节来定义一个字符, 例如使用两个字节的<code>gb2312</code>, <code>big5</code>,  他们分别用来处<br>理中文简体和中文繁体</p>
+<p>不同的语言使用不同的编码表导致大量不同的编码表出现, 于是人们就想能不能一套编码表包含<br>所有语言, 于是<code>unicode</code>就出现了, <code>unicode</code>总共有1100000个编码位(code point), 目前<br>用到了110000个, 每种语言中的每一个字符在<code>unicode</code>中都使用一个编码位, 有了编码位与字<br>符之间的映射关系后, 还需要将编码位转成字节提供给计算机处理, <code>ASCII</code>编码就是简单的使<br>用一个字节来保存编码位, <code>unicode</code>标准定义了多种编码方式(encoding)来将编码位转成字<br>节, 例如<code>UTF-8</code>, <code>UTF-16</code>, <code>UTF-32</code>, <code>UCS-2</code>, <code>UCS-4</code>等等, <code>UTF-8</code>是我们常用的编<br>码, 它使用变长字节数来表示一个<code>unicode</code>编码位, <code>ASCII</code>中的字符在<code>UTF-8</code>中也是使用一<br>个字节, 且相同, 所以<code>ASCII</code>是<code>UTF-8</code>的子集</p>
+<h2 id="python2中的编码"><a href="#python2中的编码" class="headerlink" title="python2中的编码"></a>python2中的编码</h2><p>python2中有两种字符串类型, 一种是<code>str</code>类型, 它储存的是字节, 另一种是<code>unicode</code>, 它储<br>存的是编码位, 如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'hi 你好'</span></span><br><span class="line">print(type(s1))<span class="comment"># &lt;type 'str'&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># use a 'u' prefix</span></span><br><span class="line">s2 = <span class="string">u'hi 你好'</span></span><br><span class="line">print(type(s2))<span class="comment"># &lt;type 'unicode'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>str</code>类型的字符串保存的是字节, 所以使用<code>len</code>函数计算长度返回的将是字节数, 而<code>unicode</code><br>类型的字符串保存的是编码位, 将返回编码位个数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(len(s1))<span class="comment"># 9</span></span><br><span class="line"></span><br><span class="line">print(len(s2))<span class="comment"># 5</span></span><br></pre></td></tr></table></figure>
+
+<p><code>str</code>和<code>unicode</code>的字符串可以互相转换, <code>unicode</code>字符串可以通过<code>encode</code>方法转变成储存<br>字节的<code>str</code>类型, <code>str</code>字符串可以通过<code>decode</code>转变成<code>unicode</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(s1.decode(<span class="string">'utf-8'</span>))<span class="comment"># hi 你好</span></span><br><span class="line"></span><br><span class="line">print(s2.encode(<span class="string">'utf-8'</span>))<span class="comment"># hi 你好</span></span><br></pre></td></tr></table></figure>
+
+<p><code>s1</code>是<code>str</code>类型, 保存的是计算机使用的字节码(Bytes), 它使用<code>decode</code>方法根据<code>UTF-8</code><br>编码表可以解码成<code>unicode</code>, <code>s2</code>是<code>unicode</code>类型, 它可以使用<code>encode</code>方法, 同样根据<br><code>UTF-8</code>编码表可以转变成字节码(Bytes), 如果使用错误的编码类型, 将返回编码错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">print(s1.decode(<span class="string">'ascii'</span>))</span><br><span class="line"><span class="comment"># Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="comment"># UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 3: ordinal not in range(128)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: s1 中的中文字符编码超出了ascii所能表示的范围, 所以解码失败</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不提供编码参数的话将使用默认编码</span></span><br><span class="line"><span class="comment"># 查看环境默认编码: sys.getdefaultencoding(), 我这里是 ascii</span></span><br><span class="line">print(s2.encode())</span><br><span class="line"><span class="comment"># Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="comment"># UnicodeEncodeError: 'ascii' codec can't encode characters in position 3-4: ordinal not in range(128)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: s2中的中文编码位超过了ascii所能表示的范围, 所以编码失败</span></span><br><span class="line"></span><br><span class="line">print(s1.decode(<span class="string">'ascii'</span>, <span class="string">'replace'</span>))<span class="comment"># hi ������</span></span><br><span class="line">print(s2.encode(<span class="string">'ascii'</span>, <span class="string">'replace'</span>))<span class="comment"># hi ??</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: 第二个参数使用replace将会使用'?'代替不可编码/解码的字符</span></span><br><span class="line"><span class="comment"># decode时返回了6个问号, 而encode只有两个, 这是因为s1字符串内部储存的是字节, 而中文</span></span><br><span class="line"><span class="comment"># '哈哈'使用了六个Bytes, 使用ascii解码时将六个字节当成六个字符处理, 因为超过了ascii</span></span><br><span class="line"><span class="comment"># 所能表示的范围, 所以返回六个问号, 而s2储存的时编码位, 其内部的中文'哈哈'是两个</span></span><br><span class="line"><span class="comment"># unicode编码位, 使用ascii编码时是当作两个字符处理, 超过了ascii表示范围, 返回两个问</span></span><br><span class="line"><span class="comment"># 号</span></span><br></pre></td></tr></table></figure>
+
+<p>python2中很多地方都会存在隐性转换, 比如尝试将<code>unicode</code>字符串和<code>str</code>类型(字节)拼接起<br>来, python2先会自动将<code>str</code>字节字符串decode成默认编码类型的字符串, 然后再拼接</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">u'hi'</span> + <span class="string">' nihao'</span>)<span class="comment"># hi nihao</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">u'hi'</span> + <span class="string">' 你好'</span>)</span><br><span class="line"><span class="comment"># Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="comment"># UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 1: ordinal not in range(128)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: python2首先会将' 你好'按默认编码ASCII解码, 但是中文是超出了ASCII表示的范围,</span></span><br><span class="line"><span class="comment"># 所以报UnicodeDecodeError</span></span><br></pre></td></tr></table></figure>
+
+<p>python2中隐性的字符串类型转换在所有字符都是ascii时表现正常, 当存在其他编码字符时就<br>可能导致错误</p>
+<h1 id="python3中的编码"><a href="#python3中的编码" class="headerlink" title="python3中的编码"></a>python3中的编码</h1><p>python3中也有两种类型的字符串, 直接由引号括起来的字符串是<code>str</code>类型, 普通字符串加<code>b</code><br>前缀的字符串属于<code>bytes</code>类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'hi 你好'</span></span><br><span class="line">print(type(s1))<span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">s2 = <span class="string">b'hi how old are you'</span></span><br><span class="line">print(type(s2))<span class="comment"># &lt;class 'bytes'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>python2中的<code>str</code> 等价于 python3中的<code>bytes</code><br>python2中的<code>unicode</code> 等价于 python3中的<code>str</code></p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-python中的生成器和迭代器" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -95,7 +185,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -121,17 +211,18 @@
 <p>迭代器实例</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">it2</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line">        self.index = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            curr_char = self.text[self.index]</span><br><span class="line">        <span class="keyword">except</span> IndexError:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration()</span><br><span class="line"></span><br><span class="line">obj = it2(<span class="string">'abcdefg'</span>)</span><br><span class="line">print(next(i2))<span class="comment"># 输出 a</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 b</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 c</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 d</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 e</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 f</span></span><br><span class="line">print(next(i2))<span class="comment"># 输出 g</span></span><br></pre></td></tr></table></figure>
 
-<p>我们使用<code>for</code>语句迭代一个对象(<code>obj</code>)过程如下:</p>
+
+<h2 id="使用for迭代的过程"><a href="#使用for迭代的过程" class="headerlink" title="使用for迭代的过程"></a>使用for迭代的过程</h2><p>我们使用<code>for</code>语句迭代一个对象(<code>obj</code>)过程如下:</p>
 <ol>
-<li>使用内置函数<code>iter</code>获取<code>obj</code>对象的迭代器 (分两种情况, 第一种是通过<code>__iter__</code>直接获取对象的迭代器,<br>第二种是通过python解释器自动创建迭代器, 并通过<code>obj</code>对象的<code>__getitem__</code>方法获取序列元素)</li>
-<li>获得迭代器<code>iter</code>后, 循环调用<code>next(iter)</code>获取元素, 直到<code>__next__</code>方法抛出StopIteration结束循环</li>
+<li>使用内置函数<code>iter</code>获取<code>obj</code>对象的迭代器 (分两种情况, 第一种是通过<code>__iter__</code>直接<br>获取对象的迭代器, 第二种是通过python解释器自动创建迭代器</li>
+<li>获得迭代器后, 循环调用<code>next(iter)</code>获取元素, <code>next</code>函数调用迭代器内部的<code>__next__</code><br>方法以获得序列中的元素, 直到<code>__next__</code>方法抛出StopIteration结束循环</li>
 </ol>
 <h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>生成器是迭代器的子集, 所以它也属于迭代器, 只是它的实现方式不一样, 生成器更简洁, 而且<br>它不需要像迭代器一样维护一个索引, 它是通过<code>yield</code>语句来实现的</p>
 <p>生成器函数实例</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">it3</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> curr_char <span class="keyword">in</span> text:</span><br><span class="line">        <span class="keyword">yield</span> curr_char</span><br><span class="line"></span><br><span class="line">obj = it3(<span class="string">'abcdefg'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> obj:</span><br><span class="line">    <span class="comment"># 依次打印 a, b, c, d, e, f, g</span></span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
 
 <p>代码在执行到<code>yield</code>时, 将返回其后的值, 然后并不像<code>return</code>语句一样退出, 而是挂起函数<br>的状态, 下次再从当前胃继续执行</p>
-<p>生成器表达式</p>
+<h2 id="生成器表达式"><a href="#生成器表达式" class="headerlink" title="生成器表达式"></a>生成器表达式</h2><p>类似列表推导式, 只是方括号替换成大括号</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表推导式</span></span><br><span class="line">li = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">print(li)<span class="comment"># 输出 [0, 1, 4, 9, 16]</span></span><br><span class="line"><span class="comment"># 生成器表达式</span></span><br><span class="line">li = (x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line">print(li)<span class="comment"># &lt;generator object &lt;genexpr&gt; at 0x7ff563aa6938&gt;</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 0</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 1</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 4</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 9</span></span><br><span class="line">print(next(li))<span class="comment"># 输出 16</span></span><br><span class="line">print(next(li))<span class="comment"># 自动抛出StopIteration异常</span></span><br></pre></td></tr></table></figure>
 
 <p>生成器除了实现简洁外, 它还有节省内存的优点, 它不是一次性构建整个结果列表, 它有延迟计<br>算的特点, 按需产生结果</p>
@@ -547,94 +638,6 @@
 
 </article>
     
-    <article id="post-散列" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2017/08/24/%E6%95%A3%E5%88%97/"
-    >散列</a> 
-</h2>
- 
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2017/08/24/%E6%95%A3%E5%88%97/" class="article-date">
-  <time datetime="2017-08-24T14:32:11.000Z" itemprop="datePublished">2017-08-24</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-  </div>
-
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>参考《数据结构与算法分析（C语言描述）》 第二版 第五章 散列</p>
-<h1 id="什么是散列表？"><a href="#什么是散列表？" class="headerlink" title="什么是散列表？"></a>什么是散列表？</h1><p>散列表是一种数据结构，它支持对一组元素进行各种操作，不过它只支持二叉查找树所允许的一部分操作。<br>散列表的实现叫做散列，散列是一种可以用常数时间执行插入、删除和查找的技术，但是它对排序操作是不支持的。</p>
-<h1 id="理想的散列表"><a href="#理想的散列表" class="headerlink" title="理想的散列表"></a>理想的散列表</h1><p>理想的散列表就是一个包含关键字的，具有固定大小的数组。每个关键字被映射到从 0 到 tableSize-1 这个范围中的某个数，<br>这个映射叫做散列函数，理想的情况下，任何两个不同的的关键字，映射到不同的单元。我们需要找一个散列函数，使能够在单元<br>间均匀的分配关键字。</p>
-<h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>如果关键字是整数，那么直接返回 key % tableSize</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> tableSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key % tableSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然而当关键字的取值具有一些不理想的性质时，上面这个散列函数就是一个不好的选择，例如，当tableSize = 10时，关键字都是<br>个位数为 0 的整数，那么上面这个散列函数返回的值永远是0，也就是说，所有的关键字都被映射到单元0了，这是不好的。为了使<br>分配的更均匀，tableSize最好为素数。<br>一般，关键字的的值都是字符串，那么有以下几种方法来实现散列函数</p>
-<ul>
-<li>第一种，把字符的ASCII码值加起来，然后再模tableSize。这样的缺点就是当tableSize很大时，分配就不会均匀。</li>
-<li>第二种，假设关键字是由三个英文字母组成，那么三个字符有17576种组合（26的三次方），如果表大小是10007，<br>这就是一个合理的均匀分配，但是，英文并不是随机组合，三个字幕组成有效的单词大概只有2851个，即使没有冲突，<br>也只有表的28%被散列到，所以也是不合适的。</li>
-<li>第三种涉及到字符串中所有字符，所以当关键字特别长时，计算会花费过多时间，解决方法就是不计算所有字符，而挑选其中的字符，<br>比如只计算奇数位上的字符。</li>
-</ul>
-<h1 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h1><p>当两个关键字计算后得出的散列值相同时，就会产生冲突，解决冲突有两种方法：分离链接法 &amp; 开放定址法</p>
-<h2 id="分离链接法"><a href="#分离链接法" class="headerlink" title="分离链接法"></a>分离链接法</h2><p>该方法将所有散列值相同的元素保留到一个表中，这种方法的缺点就是使用了指针，由于给新单元分配指针需要时间，因此导致算法速度<br>较慢，另外，它还依赖另一种数据结构（链表）。</p>
-<h2 id="开放定址法"><a href="#开放定址法" class="headerlink" title="开放定址法"></a>开放定址法</h2><p>开放定址法中如果遇到了冲突，则尝试选择另外的单元，直到找到空的单元为止。</p>
-<h2 id="再散列"><a href="#再散列" class="headerlink" title="再散列"></a>再散列</h2><p>使用前面两种方法解决冲突时，当表的元素过多时，操作的运行时间将过长，而且insert操作可能失败。解决方案就是扩展表，使表增大<br>一倍，并使用一个新的散列函数，扫描原表中的元素，重新计算散列值并插入到新表中，这个操作就叫再散列。</p>
-<h2 id="可扩散列"><a href="#可扩散列" class="headerlink" title="可扩散列"></a>可扩散列</h2><p>fuck，看不懂！</p>
-<h1 id="散列表的应用"><a href="#散列表的应用" class="headerlink" title="散列表的应用"></a>散列表的应用</h1><ul>
-<li>编译器中使用散列表跟踪源代码声明的变量，这种数据结构叫做<code>符号表</code>。</li>
-<li>使用散列表解决图论问题。</li>
-<li>游戏编程中</li>
-<li>在线拼写检测程序</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>散列表以常数时间实现insert和find操作，但是当表中元素过多时，表的性能将下降。另外，当关键字的类型以及性质比较特殊时，选择<br>合适的散列散列函数也会很大程度上影响表的性能。</p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
     <article id="post-PEP-333——Python-Web服务器网关接口" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -822,6 +825,94 @@
 
 </article>
     
+    <article id="post-散列" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2017/08/24/%E6%95%A3%E5%88%97/"
+    >散列</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2017/08/24/%E6%95%A3%E5%88%97/" class="article-date">
+  <time datetime="2017-08-24T14:32:11.000Z" itemprop="datePublished">2017-08-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>参考《数据结构与算法分析（C语言描述）》 第二版 第五章 散列</p>
+<h1 id="什么是散列表？"><a href="#什么是散列表？" class="headerlink" title="什么是散列表？"></a>什么是散列表？</h1><p>散列表是一种数据结构，它支持对一组元素进行各种操作，不过它只支持二叉查找树所允许的一部分操作。<br>散列表的实现叫做散列，散列是一种可以用常数时间执行插入、删除和查找的技术，但是它对排序操作是不支持的。</p>
+<h1 id="理想的散列表"><a href="#理想的散列表" class="headerlink" title="理想的散列表"></a>理想的散列表</h1><p>理想的散列表就是一个包含关键字的，具有固定大小的数组。每个关键字被映射到从 0 到 tableSize-1 这个范围中的某个数，<br>这个映射叫做散列函数，理想的情况下，任何两个不同的的关键字，映射到不同的单元。我们需要找一个散列函数，使能够在单元<br>间均匀的分配关键字。</p>
+<h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>如果关键字是整数，那么直接返回 key % tableSize</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> tableSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key % tableSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然而当关键字的取值具有一些不理想的性质时，上面这个散列函数就是一个不好的选择，例如，当tableSize = 10时，关键字都是<br>个位数为 0 的整数，那么上面这个散列函数返回的值永远是0，也就是说，所有的关键字都被映射到单元0了，这是不好的。为了使<br>分配的更均匀，tableSize最好为素数。<br>一般，关键字的的值都是字符串，那么有以下几种方法来实现散列函数</p>
+<ul>
+<li>第一种，把字符的ASCII码值加起来，然后再模tableSize。这样的缺点就是当tableSize很大时，分配就不会均匀。</li>
+<li>第二种，假设关键字是由三个英文字母组成，那么三个字符有17576种组合（26的三次方），如果表大小是10007，<br>这就是一个合理的均匀分配，但是，英文并不是随机组合，三个字幕组成有效的单词大概只有2851个，即使没有冲突，<br>也只有表的28%被散列到，所以也是不合适的。</li>
+<li>第三种涉及到字符串中所有字符，所以当关键字特别长时，计算会花费过多时间，解决方法就是不计算所有字符，而挑选其中的字符，<br>比如只计算奇数位上的字符。</li>
+</ul>
+<h1 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h1><p>当两个关键字计算后得出的散列值相同时，就会产生冲突，解决冲突有两种方法：分离链接法 &amp; 开放定址法</p>
+<h2 id="分离链接法"><a href="#分离链接法" class="headerlink" title="分离链接法"></a>分离链接法</h2><p>该方法将所有散列值相同的元素保留到一个表中，这种方法的缺点就是使用了指针，由于给新单元分配指针需要时间，因此导致算法速度<br>较慢，另外，它还依赖另一种数据结构（链表）。</p>
+<h2 id="开放定址法"><a href="#开放定址法" class="headerlink" title="开放定址法"></a>开放定址法</h2><p>开放定址法中如果遇到了冲突，则尝试选择另外的单元，直到找到空的单元为止。</p>
+<h2 id="再散列"><a href="#再散列" class="headerlink" title="再散列"></a>再散列</h2><p>使用前面两种方法解决冲突时，当表的元素过多时，操作的运行时间将过长，而且insert操作可能失败。解决方案就是扩展表，使表增大<br>一倍，并使用一个新的散列函数，扫描原表中的元素，重新计算散列值并插入到新表中，这个操作就叫再散列。</p>
+<h2 id="可扩散列"><a href="#可扩散列" class="headerlink" title="可扩散列"></a>可扩散列</h2><p>fuck，看不懂！</p>
+<h1 id="散列表的应用"><a href="#散列表的应用" class="headerlink" title="散列表的应用"></a>散列表的应用</h1><ul>
+<li>编译器中使用散列表跟踪源代码声明的变量，这种数据结构叫做<code>符号表</code>。</li>
+<li>使用散列表解决图论问题。</li>
+<li>游戏编程中</li>
+<li>在线拼写检测程序</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>散列表以常数时间实现insert和find操作，但是当表中元素过多时，表的性能将下降。另外，当关键字的类型以及性质比较特殊时，选择<br>合适的散列散列函数也会很大程度上影响表的性能。</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-python多线程编程" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -892,93 +983,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-python源码解析-读书笔记II" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2017/07/27/python%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0II/"
-    >python源码解析 读书笔记II</a> 
-</h2>
- 
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2017/07/27/python%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0II/" class="article-date">
-  <time datetime="2017-07-27T14:03:11.000Z" itemprop="datePublished">2017-07-27</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
-  </div>
-
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <h1 id="python源码解析-读书笔记II-——-python虚拟机"><a href="#python源码解析-读书笔记II-——-python虚拟机" class="headerlink" title="python源码解析 读书笔记II —— python虚拟机"></a>python源码解析 读书笔记II —— python虚拟机</h1><h2 id="python执行过程"><a href="#python执行过程" class="headerlink" title="python执行过程"></a>python执行过程</h2><p>python源代码 输入 -&gt; python解释器 编译 -&gt; python字节码 输入 -&gt; python虚拟机 执行</p>
-<h2 id="python编译编出来的到底是什么玩意？"><a href="#python编译编出来的到底是什么玩意？" class="headerlink" title="python编译编出来的到底是什么玩意？"></a>python编译编出来的到底是什么玩意？</h2><p>python是一门解释型语言，它编译后得到的不是机器码，而是叫字节码，就是以<code>.pyc</code>为后缀的文件。</p>
-<p>python源代码中的静态信息（字符串、常量值）储存在一个运行时的对象中，这个对象就是<code>PyCodeObject</code>，python编译的结果其实就是这个对象，而<code>.pyc</code>文件就是这个对象在硬盘上的表现形式。</p>
-<p>PyCodeObject对象的声明<br>code.h</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">  PyObject_HEAD</span><br><span class="line">  <span class="keyword">int</span> co_argcount; <span class="comment">// Code block中位置参数的个数（位置参数？）</span></span><br><span class="line">  <span class="keyword">int</span> co_nlocals; <span class="comment">// Code block中局部变量的个数（包括位置参数）</span></span><br><span class="line">  <span class="keyword">int</span> co_stacksize; <span class="comment">// 执行这个code block需要的栈空间</span></span><br><span class="line">  <span class="keyword">int</span> co_flags;</span><br><span class="line">  PyObject *co_code; <span class="comment">// code block编译所得字节码的指令序列，以PyStringObject的形式存在</span></span><br><span class="line">  PyObject *co_consts; <span class="comment">// 保存该code block中所有常量，以PyTupleObject的形式存在</span></span><br><span class="line">  PyObject *co_names; <span class="comment">// 保存该code block中所有符号（？），以PyTupleObject的形式存在</span></span><br><span class="line">  PyObject *co_varnames；<span class="comment">// 保存该code block中左右局部变量名</span></span><br><span class="line">  PyObject *co_freevars; <span class="comment">// Python实现闭包需要用到的东西</span></span><br><span class="line">  PyObject *co_cellvars; <span class="comment">// code block中内部嵌套函数所引用的局部变量名集合</span></span><br><span class="line">  <span class="comment">/* THe rest doesn't count for hash/cmp */</span></span><br><span class="line">  PyObject *co_filename; <span class="comment">// code block中对应的py文件完整路径</span></span><br><span class="line">  PyObject *co_name; <span class="comment">// code block的名字，通常是函数名或类名</span></span><br><span class="line">  <span class="keyword">int</span> co_firstlineno; <span class="comment">// code block对应py文件中的起始行</span></span><br><span class="line">  PyObject *co_lnotab; <span class="comment">// 字节码指令与py文件中source code行号的对应关系，以PyStringObject的形式存在</span></span><br><span class="line">&#125; PyCodeObject;</span><br></pre></td></tr></table></figure>
-
-<p>python代码中每一个code block都会创建一个PyCodeObject对象与之对应。code block就是一个 作用域/命名空间，例如一个 函数/类/源文件。</p>
-<p>怎样生成<code>.pyc</code>文件</p>
-<ul>
-<li>import一个模块时，会生成该模块的pyc文件</li>
-<li>python标准库中的py_compile、compiler工具</li>
-</ul>
-<p>import一个模块时，python会在设定好的path中按顺序查找以这个模块名命名的dll和pyc文件，如果只找到.py文件，那就会把源代码编译成PyCodeObject对象，并创建.pyc文件，把对象写入文件中，接下来python才会对.pyc文件进行加载操作。实际上就是把pyc文件的Code对象在内存上重新复制出来。</p>
-<p>co_lnotab域储存的是字节码指令与py文件中source code行号的对应关系，而在python2.3以前，有一条字节码指令，叫SET_LINENO，这条字节码会记录py文件中source code的位置，python2.3之后编译不会再产生这条字节码，因为字节码代表的是运行时的行为，而记录源代码行号的动作完全可以在编译时完成，所以python会在编译时直接将这个信息记录到co_lnotab中。</p>
-<p>python中可以访问PyCodeObject对象。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source = open(<span class="string">'demo.py'</span>).read()</span><br><span class="line">co = compile(source, <span class="string">'demo.py'</span>, <span class="string">'exec'</span>) <span class="comment"># co就是PyCodeObject</span></span><br><span class="line">type(co) <span class="comment"># &lt;type 'code'&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="pyc文件的生成"><a href="#pyc文件的生成" class="headerlink" title="pyc文件的生成"></a>pyc文件的生成</h2><p>python的import机制会产生pyc文件，那么import时到底做了哪些操作？<br>import.c</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">write_compiled_module</span><span class="params">(PyCodeObject *co, <span class="keyword">char</span> *cpathname, <span class="keyword">long</span> mtime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  FILE *fp;</span><br><span class="line">  fp = open_exclusive(cpathname); <span class="comment">// 排他性打开文件</span></span><br><span class="line">  <span class="comment">// 【1】写入Python magic number</span></span><br><span class="line">  PyMarshal_WriteLongToFile(pyc_magic, fp, Py_MARSHAL_VERSION);</span><br><span class="line">  <span class="comment">// 【2】写入时间信息</span></span><br><span class="line">  PyMarshal_WriteLongToFile(mtime, fp, Py_MARSHAL_VERSION);</span><br><span class="line">  <span class="comment">// 【3】写入PyCodeObject对象</span></span><br><span class="line">  PyMarshal_WriteObjectToFile((PyObject *)co, fp, Py_MARSHAL_VERSION);</span><br><span class="line">  </span><br><span class="line">  fflush(fp);</span><br><span class="line">  fclose(fp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>magic number是啥？<br>他是python定义的一个整数值，一般不同的版本的magic number不同，，这个值用来保证python的兼容性的。python加载pyc文件时首先会检查这个值，如果不同则会拒绝加载这个pyc文件。<br>另外这个值定义在import.c中。</p>
-<p>为什么要写如时间信息？<br>这主要是为了保证pyc文件与源文件同步，当用户修改了源文件，python加载了较旧的pyc文件后，会检查发现pyc的时间早于py文件，于是会自动重新编译源文件，生成新的pyc文件。</p>
-<p>PyCodeObject怎么写入文件中？<br>根据对象中不同类型的域调用不同的方法去写文件，在写对象之前都会先写入对象的类型，这样对pyc文件再次加载有重要作用。</p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
 
 
     </footer>

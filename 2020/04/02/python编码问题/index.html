@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    IP地址结构及子网划分 |  oyzy
+    python编码问题 |  oyzy
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -33,7 +33,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-IP地址结构及子网划分" class="article article-type-post" itemscope
+  <article id="post-python编码问题" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -41,7 +41,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  IP地址结构及子网划分
+  python编码问题
 </h1>
  
 
@@ -50,12 +50,12 @@
 
     
     <div class="article-meta">
-      <a href="/2017/11/23/IP%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86/" class="article-date">
-  <time datetime="2017-11-23T14:57:11.000Z" itemprop="datePublished">2017-11-23</time>
+      <a href="/2020/04/02/python%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-04-02T06:49:01.000Z" itemprop="datePublished">2020-04-02</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -64,6 +64,8 @@
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -76,7 +78,31 @@
       
 
       
-      <p>todo</p>
+      <p><a href="https://nedbatchelder.com/text/unipain.html" target="_blank" rel="noopener">参考</a></p>
+<h2 id="编码基础"><a href="#编码基础" class="headerlink" title="编码基础"></a>编码基础</h2><p><img src="/img/USASCII_code_chart.png" alt="ascii" title="source: upload.wikimedia.org"></p>
+<p>这是ascii编码表, 从0到127, 每一个数字(code point)对应一个字符, 编码表就是这种对应<br>关系的映射表, 由于计算机只能处理字节, 所以还需要将数字保存为字节, <strong><em>ASCII编码</em></strong><br>规定使用一个字节</p>
+<p>一个字节提供的编码位是从0到255, 足以存下ascii编码表中所有字符, 为了支持更多语言, 人<br>们使用更多的字节来定义一个字符, 例如使用两个字节的<code>gb2312</code>, <code>big5</code>,  他们分别用来处<br>理中文简体和中文繁体</p>
+<p>不同的语言使用不同的编码表导致大量不同的编码表出现, 于是人们就想能不能一套编码表包含<br>所有语言, 于是<code>unicode</code>就出现了, <code>unicode</code>总共有1100000个编码位(code point), 目前<br>用到了110000个, 每种语言中的每一个字符在<code>unicode</code>中都使用一个编码位, 有了编码位与字<br>符之间的映射关系后, 还需要将编码位转成字节提供给计算机处理, <code>ASCII</code>编码就是简单的使<br>用一个字节来保存编码位, <code>unicode</code>标准定义了多种编码方式(encoding)来将编码位转成字<br>节, 例如<code>UTF-8</code>, <code>UTF-16</code>, <code>UTF-32</code>, <code>UCS-2</code>, <code>UCS-4</code>等等, <code>UTF-8</code>是我们常用的编<br>码, 它使用变长字节数来表示一个<code>unicode</code>编码位, <code>ASCII</code>中的字符在<code>UTF-8</code>中也是使用一<br>个字节, 且相同, 所以<code>ASCII</code>是<code>UTF-8</code>的子集</p>
+<h2 id="python2中的编码"><a href="#python2中的编码" class="headerlink" title="python2中的编码"></a>python2中的编码</h2><p>python2中有两种字符串类型, 一种是<code>str</code>类型, 它储存的是字节, 另一种是<code>unicode</code>, 它储<br>存的是编码位, 如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'hi 你好'</span></span><br><span class="line">print(type(s1))<span class="comment"># &lt;type 'str'&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># use a 'u' prefix</span></span><br><span class="line">s2 = <span class="string">u'hi 你好'</span></span><br><span class="line">print(type(s2))<span class="comment"># &lt;type 'unicode'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>str</code>类型的字符串保存的是字节, 所以使用<code>len</code>函数计算长度返回的将是字节数, 而<code>unicode</code><br>类型的字符串保存的是编码位, 将返回编码位个数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(len(s1))<span class="comment"># 9</span></span><br><span class="line"></span><br><span class="line">print(len(s2))<span class="comment"># 5</span></span><br></pre></td></tr></table></figure>
+
+<p><code>str</code>和<code>unicode</code>的字符串可以互相转换, <code>unicode</code>字符串可以通过<code>encode</code>方法转变成储存<br>字节的<code>str</code>类型, <code>str</code>字符串可以通过<code>decode</code>转变成<code>unicode</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(s1.decode(<span class="string">'utf-8'</span>))<span class="comment"># hi 你好</span></span><br><span class="line"></span><br><span class="line">print(s2.encode(<span class="string">'utf-8'</span>))<span class="comment"># hi 你好</span></span><br></pre></td></tr></table></figure>
+
+<p><code>s1</code>是<code>str</code>类型, 保存的是计算机使用的字节码(Bytes), 它使用<code>decode</code>方法根据<code>UTF-8</code><br>编码表可以解码成<code>unicode</code>, <code>s2</code>是<code>unicode</code>类型, 它可以使用<code>encode</code>方法, 同样根据<br><code>UTF-8</code>编码表可以转变成字节码(Bytes), 如果使用错误的编码类型, 将返回编码错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">print(s1.decode(<span class="string">'ascii'</span>))</span><br><span class="line"><span class="comment"># Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="comment"># UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 3: ordinal not in range(128)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: s1 中的中文字符编码超出了ascii所能表示的范围, 所以解码失败</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不提供编码参数的话将使用默认编码</span></span><br><span class="line"><span class="comment"># 查看环境默认编码: sys.getdefaultencoding(), 我这里是 ascii</span></span><br><span class="line">print(s2.encode())</span><br><span class="line"><span class="comment"># Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="comment"># UnicodeEncodeError: 'ascii' codec can't encode characters in position 3-4: ordinal not in range(128)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: s2中的中文编码位超过了ascii所能表示的范围, 所以编码失败</span></span><br><span class="line"></span><br><span class="line">print(s1.decode(<span class="string">'ascii'</span>, <span class="string">'replace'</span>))<span class="comment"># hi ������</span></span><br><span class="line">print(s2.encode(<span class="string">'ascii'</span>, <span class="string">'replace'</span>))<span class="comment"># hi ??</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: 第二个参数使用replace将会使用'?'代替不可编码/解码的字符</span></span><br><span class="line"><span class="comment"># decode时返回了6个问号, 而encode只有两个, 这是因为s1字符串内部储存的是字节, 而中文</span></span><br><span class="line"><span class="comment"># '哈哈'使用了六个Bytes, 使用ascii解码时将六个字节当成六个字符处理, 因为超过了ascii</span></span><br><span class="line"><span class="comment"># 所能表示的范围, 所以返回六个问号, 而s2储存的时编码位, 其内部的中文'哈哈'是两个</span></span><br><span class="line"><span class="comment"># unicode编码位, 使用ascii编码时是当作两个字符处理, 超过了ascii表示范围, 返回两个问</span></span><br><span class="line"><span class="comment"># 号</span></span><br></pre></td></tr></table></figure>
+
+<p>python2中很多地方都会存在隐性转换, 比如尝试将<code>unicode</code>字符串和<code>str</code>类型(字节)拼接起<br>来, python2先会自动将<code>str</code>字节字符串decode成默认编码类型的字符串, 然后再拼接</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">u'hi'</span> + <span class="string">' nihao'</span>)<span class="comment"># hi nihao</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">u'hi'</span> + <span class="string">' 你好'</span>)</span><br><span class="line"><span class="comment"># Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="comment"># UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 1: ordinal not in range(128)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: python2首先会将' 你好'按默认编码ASCII解码, 但是中文是超出了ASCII表示的范围,</span></span><br><span class="line"><span class="comment"># 所以报UnicodeDecodeError</span></span><br></pre></td></tr></table></figure>
+
+<p>python2中隐性的字符串类型转换在所有字符都是ascii时表现正常, 当存在其他编码字符时就<br>可能导致错误</p>
+<h1 id="python3中的编码"><a href="#python3中的编码" class="headerlink" title="python3中的编码"></a>python3中的编码</h1><p>python3中也有两种类型的字符串, 直接由引号括起来的字符串是<code>str</code>类型, 普通字符串加<code>b</code><br>前缀的字符串属于<code>bytes</code>类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'hi 你好'</span></span><br><span class="line">print(type(s1))<span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">s2 = <span class="string">b'hi how old are you'</span></span><br><span class="line">print(type(s2))<span class="comment"># &lt;class 'bytes'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>python2中的<code>str</code> 等价于 python3中的<code>bytes</code><br>python2中的<code>unicode</code> 等价于 python3中的<code>str</code></p>
 
       
       <!-- reward -->
@@ -146,14 +172,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://youngziyi.github.io/2017/11/23/IP%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://youngziyi.github.io/2020/04/02/python%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
 
 
     </footer>
@@ -164,19 +190,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2017/12/19/%E5%8E%9F%E7%A0%81-%E5%8F%8D%E7%A0%81-%E8%A1%A5%E7%A0%81/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            原码、反码、补码学习
-          
-        </div>
-      </a>
     
-    
-      <a href="/2017/08/24/PEP-333%E2%80%94%E2%80%94Python-Web%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BD%91%E5%85%B3%E6%8E%A5%E5%8F%A3/" class="article-nav-link">
+      <a href="/2020/03/26/python%E4%B8%AD%E7%9A%84%E7%94%9F%E6%88%90%E5%99%A8%E5%92%8C%E8%BF%AD%E4%BB%A3%E5%99%A8/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">PEP333——Python Web服务器网关接口</div>
+        <div class="article-nav-title">python中的迭代器和生成器</div>
       </a>
     
   </nav>
