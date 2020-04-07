@@ -99,10 +99,28 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">u'hi'</span> + <span class="string">' nihao'</span>)<span class="comment"># hi nihao</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">u'hi'</span> + <span class="string">' 你好'</span>)</span><br><span class="line"><span class="comment"># Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="comment"># UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 1: ordinal not in range(128)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解释: python2首先会将' 你好'按默认编码ASCII解码, 但是中文是超出了ASCII表示的范围,</span></span><br><span class="line"><span class="comment"># 所以报UnicodeDecodeError</span></span><br></pre></td></tr></table></figure>
 
 <p>python2中隐性的字符串类型转换在所有字符都是ascii时表现正常, 当存在其他编码字符时就<br>可能导致错误</p>
-<h1 id="python3中的编码"><a href="#python3中的编码" class="headerlink" title="python3中的编码"></a>python3中的编码</h1><p>python3中也有两种类型的字符串, 直接由引号括起来的字符串是<code>str</code>类型, 普通字符串加<code>b</code><br>前缀的字符串属于<code>bytes</code>类型</p>
+<h2 id="python3中的编码"><a href="#python3中的编码" class="headerlink" title="python3中的编码"></a>python3中的编码</h2><p>python3中也有两种类型的字符串, 直接由引号括起来的字符串是<code>str</code>类型, 普通字符串加<code>b</code><br>前缀的字符串属于<code>bytes</code>类型</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'hi 你好'</span></span><br><span class="line">print(type(s1))<span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">s2 = <span class="string">b'hi how old are you'</span></span><br><span class="line">print(type(s2))<span class="comment"># &lt;class 'bytes'&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>python2中的<code>str</code> 等价于 python3中的<code>bytes</code><br>python2中的<code>unicode</code> 等价于 python3中的<code>str</code></p>
+<p>python3中不会做任何隐性的类型转换, 如果拼接<code>str</code>和<code>bytes</code>类型的字符串, 将会抛出<br><code>TypeError</code>错误</p>
+<h2 id="编码问题最佳实现"><a href="#编码问题最佳实现" class="headerlink" title="编码问题最佳实现"></a>编码问题最佳实现</h2><p>编码问题并不复杂, 只要遵循以下几点就可以避免大部分的编码问题, python2/3同样适用</p>
+<blockquote>
+<p>1.bytes on the outside, Unicode on the inside.</p>
+</blockquote>
+<p>进出你的程序的数据必须是<code>bytes</code>类型, 在程序内部处理<code>unicode</code>字符串</p>
+<blockquote>
+<p>2.know what you have</p>
+</blockquote>
+<p>必须知道自己处理的数据是什么类型的字符串, 要确定到底是<code>bytes</code>还是<code>unicdoe</code>类型,<br>如果是<code>bytes</code>类型, 还需要知道它的编码是什么, 才可以根据对应的编码将<code>bytes</code>转换<br>为<code>unicode</code>, 但是, 数据的编码是无法仅仅根据<code>bytes</code>类型的字符串本身得出来, 要么<br>从数据源处得知, 要么只能靠猜</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>1.编码表保存编码位与字符之间映射关系, <code>unicode</code>支持所有的语言字符, 它兼容<br><code>ascii</code></p>
+<p>2.编码位(code points)是数字, 需要转换成字节才能让计算机处理, 转换规则由编<br>码方式决定, 例如<code>ASCII</code>编码使用一个字节保存它所支持的127个字符, <code>UTF-8</code>使<br>用可变长字节数保存<code>unicode</code>字符, 其中, <code>ASCII</code>中的字符在<code>UTF-8</code>中是完全一<br>样的, 所以<code>ASCII</code>是<code>UTF-8</code>的子集</p>
+<p>3.python2有两种类型的字符串, <code>str</code>和<code>unicode</code>,<br><code>str</code>保存的是<code>bytes</code>,<br><code>unicode</code>保存的是<code>unicode</code>,<br><code>str</code>通过<code>decode</code>方法可以转换成<code>unicode</code>,<br><code>unicdoe</code>通过<code>encode</code>方法可以转换成<code>bytes</code>,</p>
+<p>4.python3同样有两种类型的字符串, <code>str</code>和<code>bytes</code>,<br><code>str</code>保存的是<code>unicode</code>,<br><code>bytes</code>保存的是<code>bytes</code>,<br><code>str</code>通过<code>encode</code>方法转换成<code>bytes</code><br><code>bytes</code>通过<code>decode</code>方法转换成<code>str</code></p>
+<p>5.python2中存在隐性转换字符串类型的现象, 例如拼接不同类型的字符串, 则会根据<br>默认编码自动将<code>bytes</code>转换成<code>unicode</code>再拼接, python3中拼接不同类型字符串则会<br>报错, tip1: 不要依赖自动转换, 任何时候都需要清楚的知道自己处理的字符串类型</p>
+<p>6.程序内部处理的字符串都应该是<code>unicode</code>类型, 出去的都应该是<code>bytes</code>类型</p>
+</blockquote>
 
       
       <!-- reward -->
