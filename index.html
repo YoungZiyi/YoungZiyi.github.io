@@ -72,6 +72,73 @@
     
     
     
+    <article id="post-python异步IO" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/04/06/python%E5%BC%82%E6%AD%A5IO/"
+    >python异步IO</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/06/python%E5%BC%82%E6%AD%A5IO/" class="article-date">
+  <time datetime="2020-04-06T06:49:01.000Z" itemprop="datePublished">2020-04-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>cpu的速度远远快于磁盘IO以及网络IO等, 在同步IO模型下, 一旦遇到IO操作就需要等待IO完成, 在等待过程中, 当前线程被挂起, cpu无法继续执行后面的代码, 使用多线程/进程可以并发执行代码, 当一个线程被挂起, cpu就会执行其他线程, 实现并发执行</p>
+<p>系统切换线程/进程的开销是非常大的, 一旦线程/进程数量过多, 切换所花的时间就越多, </p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-python编码问题" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -343,72 +410,6 @@
 
 </article>
     
-    <article id="post-PHP框架的路由实现浅析" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2018/10/24/PHP%E6%A1%86%E6%9E%B6%E7%9A%84%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E6%B5%85%E6%9E%90/"
-    >PHP框架的路由实现浅析</a> 
-</h2>
- 
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2018/10/24/PHP%E6%A1%86%E6%9E%B6%E7%9A%84%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E6%B5%85%E6%9E%90/" class="article-date">
-  <time datetime="2018-10-24T15:15:11.000Z" itemprop="datePublished">2018-10-24</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a>
-  </div>
-
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>todo</p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BA%94%E7%94%A8%E6%8A%80%E6%9C%AF/" rel="tag">应用技术</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
     <article id="post-select-poll-epoll-初探" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -432,7 +433,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/epoll/">epoll</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -447,9 +448,9 @@
       
 
       
-      <h1 id="select-poll-epoll-初探"><a href="#select-poll-epoll-初探" class="headerlink" title="select poll epoll 初探"></a>select poll epoll 初探</h1><p>这三个都是所谓的synchronous I/O multiplexing（同步I/O多路复用），在学习这个之前，有必要了解一下常见的I/O模型，<br>而在了解I/O模型前又又必要了解一下内核空间及用户空间。</p>
+      <h1 id="select-poll-epoll-初探"><a href="#select-poll-epoll-初探" class="headerlink" title="select poll epoll 初探"></a>select poll epoll 初探</h1><p>这三个都是所谓的synchronous I/O multiplexing（同步I/O多路复用），在学习这个之前，有必要了解一下常见的I/O模型，<br>而在了解I/O模型前又有必要了解一下内核空间及用户空间。</p>
 <h2 id="1-内核空间-用户空间"><a href="#1-内核空间-用户空间" class="headerlink" title="1 内核空间/用户空间"></a>1 内核空间/用户空间</h2><p>所谓的内核空间就是操作系统使用的内存空间，用户空间就是用户进程使用的内存空间，为了操作系统的安全，用户进程不能直接<br>操作操作系统内存空间，所以，内核空间和用户空间的数据交换需要通过内核提供的一组接口进行，也就是常说的系统调用。</p>
-<h2 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2 I/O模型"></a>2 I/O模型</h2><p>I/O模型就是I/O操作的方式，I/O操作就是用户进程与外界数据交换的操作，而与外界进行数据交换需要操作系统内核提供支持，<br>常见的I/O模型又四种，阻塞I/O、非阻塞I/O、多路复用I/O、信号驱动I/O、异步I/O。</p>
+<h2 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2 I/O模型"></a>2 I/O模型</h2><p>I/O模型就是I/O操作的方式，I/O操作就是用户进程与外界数据交换的操作，而与外界进行数据交换需要操作系统内核提供支持，<br>常见的I/O模型有四种，阻塞I/O、非阻塞I/O、多路复用I/O、信号驱动I/O、异步I/O。</p>
 <h3 id="2-1-阻塞I-O（blocking-I-O）"><a href="#2-1-阻塞I-O（blocking-I-O）" class="headerlink" title="2.1 阻塞I/O（blocking I/O）"></a>2.1 阻塞I/O（blocking I/O）</h3><p>阻塞I/O就是进程请求I/O操作时会阻塞，具体一点就是用户进程向操作系统发起I/O请求，例如read操作中调用了系统函数recvfrom，<br>内核收到请求后就开始了I/O操作的第一个阶段————准备数据，如果是网络I/O请求，那么内核需要等待足够的数据到来，这时数据<br>保存在内核缓冲区，在这这个等待过程中，用户进程一直处于阻止塞状态（当然用户的I/O请求中也可以设置非阻塞，下面会提到），<br>当数据准备好了，内核就会将数据从内核缓冲区中拷贝到用户空间。用户感知到的就是调用recvfrom后，进程阻塞，直到数据准备<br>好了返回给用户进程。这就是最易理解的I/O模式。</p>
 <h3 id="2-2-非阻塞I-O（nonblocking-I-O）"><a href="#2-2-非阻塞I-O（nonblocking-I-O）" class="headerlink" title="2.2 非阻塞I/O（nonblocking I/O）"></a>2.2 非阻塞I/O（nonblocking I/O）</h3><p>可以设置socket使之成为non-blocking，继续以读操作为例子，在非阻塞I/O模式中，当用户进程调用recvfrom时，内核立即返回，<br>在内核还未准备好数据时返回error，用户进程可以隔一段时间再次调用recvfrom，直到内核准备好数据，就会把数据考哦被到用户<br>空间，完成I/O操作。</p>
 <h3 id="2-3-I-O多路复用"><a href="#2-3-I-O多路复用" class="headerlink" title="2.3 I/O多路复用"></a>2.3 I/O多路复用</h3><p>I/O多路复用类似非阻塞I/O，不一样的是使用多路复用机制可以使一个进程同时处理多个网络连接的I/O，基本原理是通过select<br>poll epoll会不断轮询多个socket，当其中某个I/O就绪就会通知用户进程。</p>
@@ -475,7 +476,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/epoll/" rel="tag">epoll</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li></ul>
 
 
     </footer>
@@ -513,7 +514,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -577,6 +578,8 @@
     <footer class="article-footer">
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" rel="tag">计算机基础</a></li></ul>
+
 
     </footer>
 
@@ -613,7 +616,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -641,7 +644,95 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-散列" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2017/08/24/%E6%95%A3%E5%88%97/"
+    >散列</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2017/08/24/%E6%95%A3%E5%88%97/" class="article-date">
+  <time datetime="2017-08-24T14:32:11.000Z" itemprop="datePublished">2017-08-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>参考《数据结构与算法分析（C语言描述）》 第二版 第五章 散列</p>
+<h1 id="什么是散列表？"><a href="#什么是散列表？" class="headerlink" title="什么是散列表？"></a>什么是散列表？</h1><p>散列表是一种数据结构，它支持对一组元素进行各种操作，不过它只支持二叉查找树所允许的一部分操作。<br>散列表的实现叫做散列，散列是一种可以用常数时间执行插入、删除和查找的技术，但是它对排序操作是不支持的。</p>
+<h1 id="理想的散列表"><a href="#理想的散列表" class="headerlink" title="理想的散列表"></a>理想的散列表</h1><p>理想的散列表就是一个包含关键字的，具有固定大小的数组。每个关键字被映射到从 0 到 tableSize-1 这个范围中的某个数，<br>这个映射叫做散列函数，理想的情况下，任何两个不同的的关键字，映射到不同的单元。我们需要找一个散列函数，使能够在单元<br>间均匀的分配关键字。</p>
+<h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>如果关键字是整数，那么直接返回 key % tableSize</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> tableSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key % tableSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然而当关键字的取值具有一些不理想的性质时，上面这个散列函数就是一个不好的选择，例如，当tableSize = 10时，关键字都是<br>个位数为 0 的整数，那么上面这个散列函数返回的值永远是0，也就是说，所有的关键字都被映射到单元0了，这是不好的。为了使<br>分配的更均匀，tableSize最好为素数。<br>一般，关键字的的值都是字符串，那么有以下几种方法来实现散列函数</p>
+<ul>
+<li>第一种，把字符的ASCII码值加起来，然后再模tableSize。这样的缺点就是当tableSize很大时，分配就不会均匀。</li>
+<li>第二种，假设关键字是由三个英文字母组成，那么三个字符有17576种组合（26的三次方），如果表大小是10007，<br>这就是一个合理的均匀分配，但是，英文并不是随机组合，三个字幕组成有效的单词大概只有2851个，即使没有冲突，<br>也只有表的28%被散列到，所以也是不合适的。</li>
+<li>第三种涉及到字符串中所有字符，所以当关键字特别长时，计算会花费过多时间，解决方法就是不计算所有字符，而挑选其中的字符，<br>比如只计算奇数位上的字符。</li>
+</ul>
+<h1 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h1><p>当两个关键字计算后得出的散列值相同时，就会产生冲突，解决冲突有两种方法：分离链接法 &amp; 开放定址法</p>
+<h2 id="分离链接法"><a href="#分离链接法" class="headerlink" title="分离链接法"></a>分离链接法</h2><p>该方法将所有散列值相同的元素保留到一个表中，这种方法的缺点就是使用了指针，由于给新单元分配指针需要时间，因此导致算法速度<br>较慢，另外，它还依赖另一种数据结构（链表）。</p>
+<h2 id="开放定址法"><a href="#开放定址法" class="headerlink" title="开放定址法"></a>开放定址法</h2><p>开放定址法中如果遇到了冲突，则尝试选择另外的单元，直到找到空的单元为止。</p>
+<h2 id="再散列"><a href="#再散列" class="headerlink" title="再散列"></a>再散列</h2><p>使用前面两种方法解决冲突时，当表的元素过多时，操作的运行时间将过长，而且insert操作可能失败。解决方案就是扩展表，使表增大<br>一倍，并使用一个新的散列函数，扫描原表中的元素，重新计算散列值并插入到新表中，这个操作就叫再散列。</p>
+<h2 id="可扩散列"><a href="#可扩散列" class="headerlink" title="可扩散列"></a>可扩散列</h2><p>fuck，看不懂！</p>
+<h1 id="散列表的应用"><a href="#散列表的应用" class="headerlink" title="散列表的应用"></a>散列表的应用</h1><ul>
+<li>编译器中使用散列表跟踪源代码声明的变量，这种数据结构叫做<code>符号表</code>。</li>
+<li>使用散列表解决图论问题。</li>
+<li>游戏编程中</li>
+<li>在线拼写检测程序</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>散列表以常数时间实现insert和find操作，但是当表中元素过多时，表的性能将下降。另外，当关键字的类型以及性质比较特殊时，选择<br>合适的散列散列函数也会很大程度上影响表的性能。</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
 
 
     </footer>
@@ -679,7 +770,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/PEP/">PEP</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -828,95 +919,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-散列" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2017/08/24/%E6%95%A3%E5%88%97/"
-    >散列</a> 
-</h2>
- 
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2017/08/24/%E6%95%A3%E5%88%97/" class="article-date">
-  <time datetime="2017-08-24T14:32:11.000Z" itemprop="datePublished">2017-08-24</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-  </div>
-
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>参考《数据结构与算法分析（C语言描述）》 第二版 第五章 散列</p>
-<h1 id="什么是散列表？"><a href="#什么是散列表？" class="headerlink" title="什么是散列表？"></a>什么是散列表？</h1><p>散列表是一种数据结构，它支持对一组元素进行各种操作，不过它只支持二叉查找树所允许的一部分操作。<br>散列表的实现叫做散列，散列是一种可以用常数时间执行插入、删除和查找的技术，但是它对排序操作是不支持的。</p>
-<h1 id="理想的散列表"><a href="#理想的散列表" class="headerlink" title="理想的散列表"></a>理想的散列表</h1><p>理想的散列表就是一个包含关键字的，具有固定大小的数组。每个关键字被映射到从 0 到 tableSize-1 这个范围中的某个数，<br>这个映射叫做散列函数，理想的情况下，任何两个不同的的关键字，映射到不同的单元。我们需要找一个散列函数，使能够在单元<br>间均匀的分配关键字。</p>
-<h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>如果关键字是整数，那么直接返回 key % tableSize</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> tableSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key % tableSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然而当关键字的取值具有一些不理想的性质时，上面这个散列函数就是一个不好的选择，例如，当tableSize = 10时，关键字都是<br>个位数为 0 的整数，那么上面这个散列函数返回的值永远是0，也就是说，所有的关键字都被映射到单元0了，这是不好的。为了使<br>分配的更均匀，tableSize最好为素数。<br>一般，关键字的的值都是字符串，那么有以下几种方法来实现散列函数</p>
-<ul>
-<li>第一种，把字符的ASCII码值加起来，然后再模tableSize。这样的缺点就是当tableSize很大时，分配就不会均匀。</li>
-<li>第二种，假设关键字是由三个英文字母组成，那么三个字符有17576种组合（26的三次方），如果表大小是10007，<br>这就是一个合理的均匀分配，但是，英文并不是随机组合，三个字幕组成有效的单词大概只有2851个，即使没有冲突，<br>也只有表的28%被散列到，所以也是不合适的。</li>
-<li>第三种涉及到字符串中所有字符，所以当关键字特别长时，计算会花费过多时间，解决方法就是不计算所有字符，而挑选其中的字符，<br>比如只计算奇数位上的字符。</li>
-</ul>
-<h1 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h1><p>当两个关键字计算后得出的散列值相同时，就会产生冲突，解决冲突有两种方法：分离链接法 &amp; 开放定址法</p>
-<h2 id="分离链接法"><a href="#分离链接法" class="headerlink" title="分离链接法"></a>分离链接法</h2><p>该方法将所有散列值相同的元素保留到一个表中，这种方法的缺点就是使用了指针，由于给新单元分配指针需要时间，因此导致算法速度<br>较慢，另外，它还依赖另一种数据结构（链表）。</p>
-<h2 id="开放定址法"><a href="#开放定址法" class="headerlink" title="开放定址法"></a>开放定址法</h2><p>开放定址法中如果遇到了冲突，则尝试选择另外的单元，直到找到空的单元为止。</p>
-<h2 id="再散列"><a href="#再散列" class="headerlink" title="再散列"></a>再散列</h2><p>使用前面两种方法解决冲突时，当表的元素过多时，操作的运行时间将过长，而且insert操作可能失败。解决方案就是扩展表，使表增大<br>一倍，并使用一个新的散列函数，扫描原表中的元素，重新计算散列值并插入到新表中，这个操作就叫再散列。</p>
-<h2 id="可扩散列"><a href="#可扩散列" class="headerlink" title="可扩散列"></a>可扩散列</h2><p>fuck，看不懂！</p>
-<h1 id="散列表的应用"><a href="#散列表的应用" class="headerlink" title="散列表的应用"></a>散列表的应用</h1><ul>
-<li>编译器中使用散列表跟踪源代码声明的变量，这种数据结构叫做<code>符号表</code>。</li>
-<li>使用散列表解决图论问题。</li>
-<li>游戏编程中</li>
-<li>在线拼写检测程序</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>散列表以常数时间实现insert和find操作，但是当表中元素过多时，表的性能将下降。另外，当关键字的类型以及性质比较特殊时，选择<br>合适的散列散列函数也会很大程度上影响表的性能。</p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PEP/" rel="tag">PEP</a></li></ul>
 
 
     </footer>
@@ -954,7 +957,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       

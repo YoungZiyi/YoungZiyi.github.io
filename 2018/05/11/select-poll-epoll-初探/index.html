@@ -55,7 +55,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/epoll/">epoll</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
       
@@ -78,9 +78,9 @@
       
 
       
-      <h1 id="select-poll-epoll-初探"><a href="#select-poll-epoll-初探" class="headerlink" title="select poll epoll 初探"></a>select poll epoll 初探</h1><p>这三个都是所谓的synchronous I/O multiplexing（同步I/O多路复用），在学习这个之前，有必要了解一下常见的I/O模型，<br>而在了解I/O模型前又又必要了解一下内核空间及用户空间。</p>
+      <h1 id="select-poll-epoll-初探"><a href="#select-poll-epoll-初探" class="headerlink" title="select poll epoll 初探"></a>select poll epoll 初探</h1><p>这三个都是所谓的synchronous I/O multiplexing（同步I/O多路复用），在学习这个之前，有必要了解一下常见的I/O模型，<br>而在了解I/O模型前又有必要了解一下内核空间及用户空间。</p>
 <h2 id="1-内核空间-用户空间"><a href="#1-内核空间-用户空间" class="headerlink" title="1 内核空间/用户空间"></a>1 内核空间/用户空间</h2><p>所谓的内核空间就是操作系统使用的内存空间，用户空间就是用户进程使用的内存空间，为了操作系统的安全，用户进程不能直接<br>操作操作系统内存空间，所以，内核空间和用户空间的数据交换需要通过内核提供的一组接口进行，也就是常说的系统调用。</p>
-<h2 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2 I/O模型"></a>2 I/O模型</h2><p>I/O模型就是I/O操作的方式，I/O操作就是用户进程与外界数据交换的操作，而与外界进行数据交换需要操作系统内核提供支持，<br>常见的I/O模型又四种，阻塞I/O、非阻塞I/O、多路复用I/O、信号驱动I/O、异步I/O。</p>
+<h2 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2 I/O模型"></a>2 I/O模型</h2><p>I/O模型就是I/O操作的方式，I/O操作就是用户进程与外界数据交换的操作，而与外界进行数据交换需要操作系统内核提供支持，<br>常见的I/O模型有四种，阻塞I/O、非阻塞I/O、多路复用I/O、信号驱动I/O、异步I/O。</p>
 <h3 id="2-1-阻塞I-O（blocking-I-O）"><a href="#2-1-阻塞I-O（blocking-I-O）" class="headerlink" title="2.1 阻塞I/O（blocking I/O）"></a>2.1 阻塞I/O（blocking I/O）</h3><p>阻塞I/O就是进程请求I/O操作时会阻塞，具体一点就是用户进程向操作系统发起I/O请求，例如read操作中调用了系统函数recvfrom，<br>内核收到请求后就开始了I/O操作的第一个阶段————准备数据，如果是网络I/O请求，那么内核需要等待足够的数据到来，这时数据<br>保存在内核缓冲区，在这这个等待过程中，用户进程一直处于阻止塞状态（当然用户的I/O请求中也可以设置非阻塞，下面会提到），<br>当数据准备好了，内核就会将数据从内核缓冲区中拷贝到用户空间。用户感知到的就是调用recvfrom后，进程阻塞，直到数据准备<br>好了返回给用户进程。这就是最易理解的I/O模式。</p>
 <h3 id="2-2-非阻塞I-O（nonblocking-I-O）"><a href="#2-2-非阻塞I-O（nonblocking-I-O）" class="headerlink" title="2.2 非阻塞I/O（nonblocking I/O）"></a>2.2 非阻塞I/O（nonblocking I/O）</h3><p>可以设置socket使之成为non-blocking，继续以读操作为例子，在非阻塞I/O模式中，当用户进程调用recvfrom时，内核立即返回，<br>在内核还未准备好数据时返回error，用户进程可以隔一段时间再次调用recvfrom，直到内核准备好数据，就会把数据考哦被到用户<br>空间，完成I/O操作。</p>
 <h3 id="2-3-I-O多路复用"><a href="#2-3-I-O多路复用" class="headerlink" title="2.3 I/O多路复用"></a>2.3 I/O多路复用</h3><p>I/O多路复用类似非阻塞I/O，不一样的是使用多路复用机制可以使一个进程同时处理多个网络连接的I/O，基本原理是通过select<br>poll epoll会不断轮询多个socket，当其中某个I/O就绪就会通知用户进程。</p>
@@ -170,7 +170,7 @@
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/epoll/" rel="tag">epoll</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li></ul>
 
 
     </footer>
@@ -181,11 +181,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2018/10/24/PHP%E6%A1%86%E6%9E%B6%E7%9A%84%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E6%B5%85%E6%9E%90/" class="article-nav-link">
+      <a href="/2020/03/26/hello-world/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            PHP框架的路由实现浅析
+            Hello World
           
         </div>
       </a>
