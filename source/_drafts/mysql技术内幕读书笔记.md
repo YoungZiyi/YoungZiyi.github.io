@@ -1,5 +1,5 @@
 ---
-title: mysql技术内幕读书笔记
+title: mysql技术内幕
 date: 2020-06-09 08:52:01
 categories: 技术
 tags: mysql
