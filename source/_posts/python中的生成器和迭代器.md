@@ -51,6 +51,7 @@ class it2:
             curr_char = self.text[self.index]
         except IndexError:
             raise StopIteration()
+        self.index += 1
 
 obj = it2('abcdefg')
 print(next(i2))# 输出 a
